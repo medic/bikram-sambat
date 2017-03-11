@@ -25,7 +25,10 @@
   },
   "homepage": "https://github.com/alxndrsn/bikram-sambat.js#readme",
   "devDependencies": {
+    "chai": "^3.5.0",
+    "grunt": "^1.0.1",
     "grunt-mocha-test": "^0.13.2",
+    "lodash": "^4.17.4",
     "mocha": "^3.2.0"
   }
 }
