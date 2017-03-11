@@ -1,0 +1,31 @@
+{
+  "name": "bikram-sambat",
+  "version": "0.1.0",
+  "description": "JS utilities for converting between the Nepali Bikram Sambat (Vikram Samvat) and Gregorian (standard European) calendars.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/alxndrsn/bikram-sambat.js.git"
+  },
+  "keywords": [
+    "bikram",
+    "sambat",
+    "vikram",
+    "samvat",
+    "nepali",
+    "calendar"
+  ],
+  "author": "alxndrsn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alxndrsn/bikram-sambat.js/issues"
+  },
+  "homepage": "https://github.com/alxndrsn/bikram-sambat.js#readme",
+  "devDependencies": {
+    "grunt-mocha-test": "^0.13.2",
+    "mocha": "^3.2.0"
+  }
+}
