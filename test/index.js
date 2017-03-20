@@ -30795,12 +30795,15 @@ describe('bikram-sambat', function() {
         for(month=1; month<=12; ++month) {
           var expectedDays = monthLengths[month-1];
 
-          it('should have ' + expectedDays + ' days in month ' + month, function() {
+          it('should have ' + expectedDays + ' days in month ' + month, (function(year, month, expectedDays) {
+            return function() {
 
-            // expect
-            assert.equal(bs.daysInMonth(year, month), expectedDays);
+              // expect
+              assert.equal(bs.daysInMonth(year, month), expectedDays);
 
-          });
+            };
+
+          }(year, month, expectedDays)));
 
         }
 
