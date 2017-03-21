@@ -17,7 +17,28 @@ function daysInMonth(year, month) {
       (((month-1) << 1))) & 3);
 }
 
-function str_toBik(bikramString) {
+function zPad(x) { return x > 9 ? x : '0' + x; }
+
+/**
+ * Magic numbers:
+ *   86400000 <- the number of miliseconds in a day
+ *   2007 <- The yar (BS) whose first day is our Bikram Sambat Epoch (BSE)
+ *   -622359900000 <- Date.parse('1950-4-13') = unix timestamp of BSE
+ */
+function str_toBik(greg) {
+  var m, dM, year = 2007,
+      days = Math.floor((Date.parse(greg) - -622359900000) / 86400000) + 1;
+
+  while(days > 0) {
+    for(m=1; m<=12; ++m) {
+      dM = daysInMonth(year, m);
+      if(days <= dM) return year + '-' + zPad(m) + '-' + zPad(days);
+      days -= dM;
+    }
+    ++year;
+  }
+
+  throw new Error('Date outside supported range: ' + greg + ' AD');
 }
 
 module.exports = {
