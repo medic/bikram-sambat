@@ -30691,6 +30691,7 @@ describe('bikram-sambat', function() {
         for(month=1; month<=12; ++month) {
           var expectedDays = monthLengths[month-1];
 
+          /*jshint loopfunc:true*/
           it('should have ' + expectedDays + ' days in month ' + month, (function(year, month, expectedDays) {
             return function() {
 
