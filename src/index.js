@@ -9,6 +9,8 @@ var ENCODED_MONTH_LENGTHS = [
     ];
 
 /**
+ * Number of days in a given month in a given year. A given month can have different
+ * numbers of days each year.
  * Magic numbers:
  *   2000 <- the first year encoded in ENCODED_MONTH_LENGTHS
  *   month #5 <- this is the only month which has a day variation of more than 1
@@ -22,6 +24,8 @@ function daysInMonth(year, month) {
 function zPad(x) { return x > 9 ? x : '0' + x; }
 
 /**
+ * Converts gregorian date string (any format parseable by Date.parse) to
+ * bikram sambat (YYYY-MM-DD format).
  * Magic numbers:
  *   86400000 <- the number of miliseconds in a day
  *   2007 <- The yar (BS) whose first day is our Bikram Sambat Epoch (BSE)
