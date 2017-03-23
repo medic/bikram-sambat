@@ -31,5 +31,8 @@
     "grunt-mocha-test": "^0.13.2",
     "lodash": "^4.17.4",
     "mocha": "^3.2.0"
+  },
+  "dependencies": {
+    "eurodig": "^1.1.0"
   }
 }

@@ -1,3 +1,5 @@
+var toDevanagari = require('eurodig/src/to_devanagari');
+
 // TODO this would be stored more efficiently converted to a string using
 // String.fromCharCode.apply(String, ENCODED_MONTH_LENGTHS), and extracted using
 // ENC_MTH.charCodeAt(...).  However, JS seems to do something weird with the
@@ -25,7 +27,7 @@ function zPad(x) { return x > 9 ? x : '0' + x; }
  *   2007 <- The yar (BS) whose first day is our Bikram Sambat Epoch (BSE)
  *   -622359900000 <- Date.parse('1950-4-13') = unix timestamp of BSE
  */
-function str_toBik(greg) {
+function str_toBik_euro(greg) {
   var m, dM, year = 2007,
       days = Math.floor((Date.parse(greg) + 622359900000) / 86400000) + 1;
 
@@ -41,7 +43,12 @@ function str_toBik(greg) {
   throw new Error('Date outside supported range: ' + greg + ' AD');
 }
 
+function str_toBik(greg) {
+  return toDevanagari(str_toBik_euro(greg));
+}
+
 module.exports = {
   daysInMonth: daysInMonth,
-  str_toBik:str_toBik
+  str_toBik:str_toBik,
+  str_toBik_euro:str_toBik_euro
 };
