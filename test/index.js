@@ -4,7 +4,7 @@ var _ = require('lodash'),
 var bs = require('../src/index.js');
 
 describe('bikram-sambat', function() {
-  describe('#str_toBik_euro()', function() {
+  describe('#str_toBik_dev()', function() {
     _.forIn({
       // gregorian -> bikram
       '1950-04-13': '२००७-०१-०१',
@@ -13,7 +13,22 @@ describe('bikram-sambat', function() {
       it('should convert ' + gregorian + ' AD => ' + expectedBikram + ' BS', function() {
 
         // expect
-        assert.equal(bs.str_toBik(gregorian), expectedBikram);
+        assert.equal(bs.str_toBik_dev(gregorian), expectedBikram);
+
+      });
+    });
+  });
+
+  describe('#str_toBik_text()', function() {
+    _.forIn({
+      // gregorian -> bikram
+      '1950-04-13': '१ बैशाख २००७',
+    }, function(expectedBikram, gregorian) {
+
+      it('should convert ' + gregorian + ' AD => ' + expectedBikram + ' BS', function() {
+
+        // expect
+        assert.equal(bs.str_toBik_text(gregorian), expectedBikram);
 
       });
     });
