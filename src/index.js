@@ -8,6 +8,21 @@ var ENCODED_MONTH_LENGTHS = [
       8673005,5315258,5314298,9459438,8673005,5315258,5314298,9459438,8473322,5315258,5314298,9459438,5327594,5315258,5314298,9459438,5327594,5315258,5314286,8673006,5315306,5315258,5265134,8673006,5315306,5315258,9459438,8673005,5315258,5314490,9459438,8673005,5315258,5314298,9459438,8473325,5315258,5314298,9459438,5327594,5315258,5314298,9459438,5327594,5315258,5314286,9459438,5315306,5315258,5265134,8673006,5315306,5315258,5265134,8673006,5315258,5314490,9459438,8673005,5315258,5314298,9459438,8669933,5315258,5314298,9459438,8473322,5315258,5314298,9459438,5327594,5315258,5314286,9459438,5315306,5315258,5265134,8673006,5315306,5315258,5265134,5527290,5527277,5527226,5527226,5528046,5527277,5528250,5528057,5527277,5527277
     ];
 
+var bikMonthNames = {
+    1: 'बैशाख',
+    2: 'जेष्ठ',
+    3: 'आषाढ़',
+    4: 'श्रावण',
+    5: 'भाद्र',
+    6: 'आश्विन',
+    7: 'कार्तिक',
+    8: 'मार्ग',
+    9: 'पौष',
+    10: 'माघ',
+    11: 'फाल्गुन',
+    12: 'चैत्र'
+};
+
 /**
  * Number of days in a given month in a given year. A given month can have different
  * numbers of days each year.
@@ -51,13 +66,27 @@ function toBikramSambatValues(gregorianString) {
 
 /**
  * Converts gregorian date string (any format parseable by Date.parse) to
- * bikram sambat (YYYY-MM-DD format).
+ * bikram sambat, in YYYY-MM-DD format with Western numerals ('2017-03-25').
  */
 function toBikramSambatWestern(greg) {
   var values = toBikramSambatValues(greg);
   return values.year + '-' + zPad(values.month) + '-' + zPad(values.day);
 }
 
+/**
+ * Converts gregorian date string (any format parseable by Date.parse) to
+ * bikram sambat, in YYYY MMMM DD format with Devanagari ('२०७३ चैत्र १२').
+ */
+function toBikramSambatLetters(greg) {
+  var values = toBikramSambatValues(greg);
+  console.log(values);
+  return toDevanagari(values.year) + ' ' + bikMonthNames[values.month] + ' ' + toDevanagari(values.day);
+}
+
+/**
+ * Converts gregorian date string (any format parseable by Date.parse) to
+ * bikram sambat, in YYYY-MM-DD format with Devanagari numerals ('२०७३-१२-१२').
+ */
 function toBikramSambat(greg) {
   return toDevanagari(toBikramSambatWestern(greg));
 }
@@ -65,5 +94,6 @@ function toBikramSambat(greg) {
 module.exports = {
   daysInMonth: daysInMonth,
   toBikramSambat:toBikramSambat,
+  toBikramSambatLetters: toBikramSambatLetters,
   toBikramSambatWestern:toBikramSambatWestern
 };

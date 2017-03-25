@@ -19,6 +19,21 @@ describe('bikram-sambat', function() {
     });
   });
 
+  describe.only('#toBikramSambatLetters()', function() {
+    _.forIn({
+      // gregorian -> bikram
+      '1950-04-13': '२००७ बैशाख १',
+    }, function(expectedBikram, gregorian) {
+
+      it('should convert ' + gregorian + ' AD => ' + expectedBikram + ' BS', function() {
+
+        // expect
+        assert.equal(bs.toBikramSambatLetters(gregorian), expectedBikram);
+
+      });
+    });
+  });
+
   describe('#toBikramSambatWestern()', function() {
     _.forIn({
       // gregorian -> bikram
