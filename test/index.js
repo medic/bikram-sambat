@@ -22,7 +22,7 @@ describe('bikram-sambat', function() {
   describe.only('#toBikramSambatLetters()', function() {
     _.forIn({
       // gregorian -> bikram
-      '1950-04-13': '२००७ बैशाख १',
+      '1950-04-13': '१ बैशाख २००७',
     }, function(expectedBikram, gregorian) {
 
       it('should convert ' + gregorian + ' AD => ' + expectedBikram + ' BS', function() {

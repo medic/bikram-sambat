@@ -75,12 +75,12 @@ function toBikramSambatWestern(greg) {
 
 /**
  * Converts gregorian date string (any format parseable by Date.parse) to
- * bikram sambat, in YYYY MMMM DD format with Devanagari ('२०७३ चैत्र १२').
+ * bikram sambat, in YYYY MMMM DD format with Devanagari ('१२ चैत्र २०७३').
  */
 function toBikramSambatLetters(greg) {
   var values = toBikramSambatValues(greg);
   console.log(values);
-  return toDevanagari(values.year) + ' ' + bikMonthNames[values.month] + ' ' + toDevanagari(values.day);
+  return toDevanagari(values.day) + ' ' + bikMonthNames[values.month] + ' ' + toDevanagari(values.year);
 }
 
 /**
