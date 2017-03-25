@@ -35,11 +35,11 @@ function toBikramSambatValues(gregorianString) {
   var month, dM, year = 2007,
       days = Math.floor((Date.parse(gregorianString) + 622359900000) / 86400000) + 1;
 
-  while(days > 0) {
-    for(month=1; month<=12; ++month) {
+  while (days > 0) {
+    for (month=1; month<=12; ++month) {
       dM = daysInMonth(year, month);
-      if(days <= dM) {
-        return { year: year, month: m, day: days };
+      if (days <= dM) {
+        return { year: year, month: month, day: days };
       }
       days -= dM;
     }
@@ -53,18 +53,17 @@ function toBikramSambatValues(gregorianString) {
  * Converts gregorian date string (any format parseable by Date.parse) to
  * bikram sambat (YYYY-MM-DD format).
  */
-function toBikramSambat(greg) {
+function toBikramSambatWestern(greg) {
   var values = toBikramSambatValues(greg);
-  return values.year + '-' + zPad(values.month) + '-' + zPad(values.days);
+  return values.year + '-' + zPad(values.month) + '-' + zPad(values.day);
 }
 
-function str_toBik(greg) {
-  return toDevanagari(str_toBik_euro(greg));
+function toBikramSambat(greg) {
+  return toDevanagari(toBikramSambatWestern(greg));
 }
 
 module.exports = {
   daysInMonth: daysInMonth,
-  str_toBik:str_toBik,
-  str_toBik_euro:str_toBik_euro
-  toBikramSambat:toBikramSambat
+  toBikramSambat:toBikramSambat,
+  toBikramSambatWestern:toBikramSambatWestern
 };
