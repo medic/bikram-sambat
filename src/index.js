@@ -23,28 +23,39 @@ function daysInMonth(year, month) {
 
 function zPad(x) { return x > 9 ? x : '0' + x; }
 
-/**
+/*
  * Converts gregorian date string (any format parseable by Date.parse) to
- * bikram sambat (YYYY-MM-DD format).
+ * bikram sambat.
  * Magic numbers:
  *   86400000 <- the number of miliseconds in a day
- *   2007 <- The yar (BS) whose first day is our Bikram Sambat Epoch (BSE)
+ *   2007 <- The year (BS) whose first day is our Bikram Sambat Epoch (BSE)
  *   -622359900000 <- Date.parse('1950-4-13') = unix timestamp of BSE
  */
-function str_toBik_euro(greg) {
-  var m, dM, year = 2007,
-      days = Math.floor((Date.parse(greg) + 622359900000) / 86400000) + 1;
+function toBikramSambatValues(gregorianString) {
+  var month, dM, year = 2007,
+      days = Math.floor((Date.parse(gregorianString) + 622359900000) / 86400000) + 1;
 
   while(days > 0) {
-    for(m=1; m<=12; ++m) {
-      dM = daysInMonth(year, m);
-      if(days <= dM) return year + '-' + zPad(m) + '-' + zPad(days);
+    for(month=1; month<=12; ++month) {
+      dM = daysInMonth(year, month);
+      if(days <= dM) {
+        return { year: year, month: m, day: days };
+      }
       days -= dM;
     }
     ++year;
   }
 
-  throw new Error('Date outside supported range: ' + greg + ' AD');
+  throw new Error('Date outside supported range: ' + gregorianString + ' AD');
+}
+
+/**
+ * Converts gregorian date string (any format parseable by Date.parse) to
+ * bikram sambat (YYYY-MM-DD format).
+ */
+function toBikramSambat(greg) {
+  var values = toBikramSambatValues(greg);
+  return values.year + '-' + zPad(values.month) + '-' + zPad(values.days);
 }
 
 function str_toBik(greg) {
@@ -55,4 +66,5 @@ module.exports = {
   daysInMonth: daysInMonth,
   str_toBik:str_toBik,
   str_toBik_euro:str_toBik_euro
+  toBikramSambat:toBikramSambat
 };
