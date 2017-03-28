@@ -28,7 +28,7 @@ function zPad(x) { return x > 9 ? x : '0' + x; }
  *   2007 <- The year (BS) whose first day is our Bikram Sambat Epoch (BSE)
  *   -622359900000 <- Date.parse('1950-4-13') = unix timestamp of BSE
  */
-function str_toBik(greg) {
+function toBik(greg) {
   var m, dM, year = 2007,
       days = Math.floor((Date.parse(greg) + 622359900000) / 86400000) + 1;
 
@@ -44,23 +44,23 @@ function str_toBik(greg) {
   throw new Error('Date outside supported range: ' + greg + ' AD');
 }
 
-function str_toBik_euro(greg) {
-  var d = str_toBik(greg);
+function toBik_euro(greg) {
+  var d = toBik(greg);
   return d.year + '-' + zPad(d.month) + '-' + zPad(d.day);
 }
 
-function str_toBik_dev(greg) {
-  return toDevanagari(str_toBik_euro(greg));
+function toBik_dev(greg) {
+  return toDevanagari(toBik_euro(greg));
 }
 
-function str_toBik_text(greg) {
-  var d = str_toBik(greg);
+function toBik_text(greg) {
+  var d = toBik(greg);
   return toDevanagari(d.day) + ' ' + MONTH_NAMES[d.month-1] + ' ' + toDevanagari(d.year);
 }
 
 module.exports = {
   daysInMonth: daysInMonth,
-  str_toBik_dev: str_toBik_dev,
-  str_toBik_euro: str_toBik_euro,
-  str_toBik_text: str_toBik_text
+  toBik_dev: toBik_dev,
+  toBik_euro: toBik_euro,
+  toBik_text: toBik_text
 };
