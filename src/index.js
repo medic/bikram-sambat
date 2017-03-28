@@ -1,4 +1,4 @@
-var toDevanagari = require('eurodig/src/to_devanagari');
+var toDevanagari = require('eurodigit/src/to_devanagari');
 
 // TODO this would be stored more efficiently converted to a string using
 // String.fromCharCode.apply(String, ENCODED_MONTH_LENGTHS), and extracted using
