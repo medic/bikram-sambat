@@ -11,7 +11,7 @@ module.exports = function(grunt) {
 				src: ['src/**/*.js'],
 				options: {
 					esversion: 3,
-					predef: ['module'],
+					node: true,
 					undef: true,
 					unused: true,
 				},
