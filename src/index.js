@@ -29,6 +29,7 @@ function zPad(x) { return x > 9 ? x : '0' + x; }
  *   -622359900000 <- Date.parse('1950-4-13') = unix timestamp of BSE
  */
 function toBik(greg) {
+  // TODO do not use Date.parse(), as per https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
   var m, dM, year = 2007,
       days = Math.floor((Date.parse(greg) + 622359900000) / 86400000) + 1;
 
