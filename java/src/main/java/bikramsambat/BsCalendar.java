@@ -2,6 +2,10 @@ package bikramsambat;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
 
 public final class BsCalendar {
 	private static final BsCalendar instance = new BsCalendar();
@@ -9,7 +13,8 @@ public final class BsCalendar {
 	private static final long[] ENCODED_MONTH_LENGTHS = {
 	      8673005L,5315258L,5314298L,9459438L,8673005L,5315258L,5314298L,9459438L,8473322L,5315258L,5314298L,9459438L,5327594L,5315258L,5314298L,9459438L,5327594L,5315258L,5314286L,8673006L,5315306L,5315258L,5265134L,8673006L,5315306L,5315258L,9459438L,8673005L,5315258L,5314490L,9459438L,8673005L,5315258L,5314298L,9459438L,8473325L,5315258L,5314298L,9459438L,5327594L,5315258L,5314298L,9459438L,5327594L,5315258L,5314286L,9459438L,5315306L,5315258L,5265134L,8673006L,5315306L,5315258L,5265134L,8673006L,5315258L,5314490L,9459438L,8673005L,5315258L,5314298L,9459438L,8669933L,5315258L,5314298L,9459438L,8473322L,5315258L,5314298L,9459438L,5327594L,5315258L,5314286L,9459438L,5315306L,5315258L,5265134L,8673006L,5315306L,5315258L,5265134L,5527290L,5527277L,5527226L,5527226L,5528046L,5527277L,5528250L,5528057L,5527277L,5527277L,
 	};
-	private static final String[] MONTH_NAMES = { "बैशाख", "जेठ", "असार", "साउन", "भदौ", "असोज", "कार्तिक", "मंसिर", "पौष", "माघ", "फाल्गुन", "चैत" };
+	private static final String[] _MONTH_NAMES = { "बैशाख", "जेठ", "असार", "साउन", "भदौ", "असोज", "कार्तिक", "मंसिर", "पौष", "माघ", "फाल्गुन", "चैत" };
+	public static final List<String> MONTH_NAMES = unmodifiableList(asList(_MONTH_NAMES));
 
 	private DevanagariDigitConverter devanagari;
 
@@ -39,7 +44,7 @@ public final class BsCalendar {
 
 	public String toBik_text(String greg) throws BsException {
 		BsDate d = toBik(greg);
-		return devanagari.toDev(d.day) + " " + MONTH_NAMES[d.month-1] + " " + devanagari.toDev(d.year);
+		return devanagari.toDev(d.day) + " " + _MONTH_NAMES[d.month-1] + " " + devanagari.toDev(d.year);
 	}
 
 	/**
