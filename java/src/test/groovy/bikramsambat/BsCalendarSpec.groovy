@@ -25,7 +25,7 @@ class BsCalendarSpec extends Specification {
 		where:
 			gregorian    | expectedBikram
 			'1950-04-13' | '१ बैशाख २००७'
-    	}
+	}
 
 	@Unroll
 	def 'toBik_euro()'(testCase) {
@@ -34,7 +34,7 @@ class BsCalendarSpec extends Specification {
 			def expectedBikram = testCase.value
 
 		expect:
-        		bs.toBik_euro(gregorian) == expectedBikram
+			bs.toBik_euro(gregorian) == expectedBikram
 
 		where:
 			testCase << testJson('toBik_euro')
