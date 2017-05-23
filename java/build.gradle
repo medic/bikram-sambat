@@ -1,6 +1,10 @@
 apply plugin: 'groovy'
 apply plugin: 'java'
 
+jar {
+	baseName = 'bikram-sambat'
+}
+
 repositories {
 	mavenLocal()
 	mavenCentral()

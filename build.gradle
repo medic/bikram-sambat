@@ -1,0 +1,7 @@
+allprojects {
+	version = 'git describe --tags'.execute().text
+}
+
+subprojects {
+	apply plugin: 'maven'
+}
