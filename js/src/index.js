@@ -61,9 +61,10 @@ function toBik_text(greg) {
 
 function toEuro_timestamp(year, month, day) {
   var timestamp = BS_EPOCH_TS;
+  --day; // magic ;¬)
   while(year >= BS_YEAR_ZERO) {
     while(month >= 1) {
-      while(day > 1) {
+      while(day >= 1) {
         timestamp += MS_PER_DAY;
         --day;
       }
