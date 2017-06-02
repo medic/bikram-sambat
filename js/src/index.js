@@ -1,4 +1,4 @@
-var toDevanagari = require('eurodigit/src/to_devanagari');
+var toDevanagari = require('eurodigit/src/to_non_euro').devanagari;
 
 var MS_PER_DAY = 86400000;
 
