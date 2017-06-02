@@ -1,0 +1,29 @@
+{
+  "name": "bikram-sambat-bootstrap",
+  "version": "1.0.0",
+  "description": "bikram sambat datepicker for bootstrap",
+  "main": "index.js",
+  "scripts": {
+    "build": "./node_modules/browserify/bin/cmd.js -e ./src/bikram-sambat-bootstrap.js -o dist/bikram-sambat-bs.js",
+    "server": "./node_modules/http-server/bin/http-server dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/medic/bikram-sambat.git"
+  },
+  "author": "alxndrsn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/medic/bikram-sambat/issues"
+  },
+  "homepage": "https://github.com/medic/bikram-sambat#readme",
+  "devDependencies": {
+    "browserify": "^14.4.0",
+    "http-server": "^0.10.0"
+  },
+  "dependencies": {
+    "bikram-sambat": "^1.0.0",
+    "eurodigit": "^3.1.1"
+  }
+}
