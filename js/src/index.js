@@ -1,5 +1,11 @@
 var toDevanagari = require('eurodigit/src/to_devanagari');
 
+var MS_PER_DAY = 86400000;
+
+// We have defined our own Epoch for Bikram Sambat: 1-1-2007 BS / 13-4-1950 AD
+var BS_EPOCH_TS = -622359900000; // = Date.parse('1950-4-13')
+var BS_YEAR_ZERO = 2007;
+
 // TODO this would be stored more efficiently converted to a string using
 // String.fromCharCode.apply(String, ENCODED_MONTH_LENGTHS), and extracted using
 // ENC_MTH.charCodeAt(...).  However, JS seems to do something weird with the
@@ -22,16 +28,10 @@ function daysInMonth(year, month) {
 
 function zPad(x) { return x > 9 ? x : '0' + x; }
 
-/**
- * Magic numbers:
- *   86400000 <- the number of miliseconds in a day
- *   2007 <- The year (BS) whose first day is our Bikram Sambat Epoch (BSE)
- *   -622359900000 <- Date.parse('1950-4-13') = unix timestamp of BSE
- */
 function toBik(greg) {
   // TODO do not use Date.parse(), as per https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
-  var m, dM, year = 2007,
-      days = Math.floor((Date.parse(greg) + 622359900000) / 86400000) + 1;
+  var m, dM, year = BS_YEAR_ZERO,
+      days = Math.floor((Date.parse(greg) - BS_EPOCH_TS) / MS_PER_DAY) + 1;
 
   while(days > 0) {
     for(m=1; m<=12; ++m) {
@@ -59,9 +59,28 @@ function toBik_text(greg) {
   return toDevanagari(d.day) + ' ' + MONTH_NAMES[d.month-1] + ' ' + toDevanagari(d.year);
 }
 
+function toEuro_timestamp(year, month, day) {
+  var timestamp = BS_EPOCH_TS;
+  while(year >= BS_YEAR_ZERO) {
+    while(month >= 1) {
+      while(day > 1) {
+        timestamp += MS_PER_DAY;
+        --day;
+      }
+      --month;
+      day = daysInMonth(year, month, day);
+    }
+    --year;
+    month = 12;
+    day = daysInMonth(year, month, day);
+  }
+  return timestamp;
+}
+
 module.exports = {
   daysInMonth: daysInMonth,
   toBik_dev: toBik_dev,
   toBik_euro: toBik_euro,
-  toBik_text: toBik_text
+  toBik_text: toBik_text,
+  toEuro_timestamp: toEuro_timestamp
 };

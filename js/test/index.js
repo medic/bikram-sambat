@@ -51,6 +51,22 @@ describe('bikram-sambat', function() {
     });
   });
 
+  describe('#toEuro_timestamp()', function() {
+    _.forIn(test_data_for('toEuro_timestamp'), function(data) {
+
+      const [year, month, day] = data.bs;
+      const expectedTimestamp = data.expectedTimestamp;
+
+      it(`should convert ${year}-${month}-${day}BS to ${expectedTimestamp}`, function() {
+
+        // expect
+        assert.equal(bs.toEuro_timestamp(year, month, day), expectedTimestamp);
+
+      });
+
+    });
+  });
+
   describe('#daysInMonth()', function() {
 
     _.forIn(test_data_for('daysInMonth'), function(monthLengths, year) {
