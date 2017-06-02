@@ -22,5 +22,5 @@ travis: test
 
 release: setup test assemble-java
 	cd js && \
-		../scripts/write-version-number $(git describe --abbrev=0 --tags) && \
+		../scripts/write-version-number $$(git describe --abbrev=0 --tags) && \
 		npm publish
