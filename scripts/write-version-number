@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+
+const v = process.argv[2];
+
+const fs = require('fs');
+const pkg = JSON.parse(fs.readFileSync('package.json').toString());
+
+if(pkg.version !== v) {
+  pkg.version = v;
+  fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
+}
