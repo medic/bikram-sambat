@@ -11,8 +11,7 @@ before_deploy:
 # TODO deploy java artifact here too
 # TODO make sure this works now JS is in a subdirectory
 deploy:
-  provider: npm
-  api_key: $NPM_API_KEY
-  email: dev@medicmobile.org
+  provider: script
   on:
     tags: true
+  script: make travis-deploy
