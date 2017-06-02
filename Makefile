@@ -17,5 +17,5 @@ test-java:
 
 travis: test
 travis-deploy:
-	npm adduser
+	npm adduser dev@medicmobile.org
 	cd js && npm publish
