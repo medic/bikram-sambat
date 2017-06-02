@@ -1,33 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-"use strict";
-module.exports = {
-	to_euro: require('./to_euro'),
-	to_int: require('./to_int'),
-	to_non_euro: require('./to_non_euro')
-};
-
-},{"./to_euro":2,"./to_int":3,"./to_non_euro":4}],2:[function(require,module,exports){
-'use strict';
-
-function replacer(c) {
-	c = c.charCodeAt(0);
-	if(c < 1642) return c - 1632; // western arabic
-	if(c < 1786) return c - 1776; // perso-arabic
-	return c - 2406; // devanagari
-}
-
-module.exports = function(original) {
-	return original && original.toString().replace(/[٠-٩۰-۹०-९]/g, replacer);
-};
-
-},{}],3:[function(require,module,exports){
-var to_euro = require('./to_euro');
-
-module.exports = function(s) {
-	return Number.parseInt(to_euro(s));
-};
-
-},{"./to_euro":2}],4:[function(require,module,exports){
 'use strict';
 
 function from(base) {
@@ -43,76 +14,8 @@ module.exports = {
 	perso_arabic: from(1776)
 };
 
-},{}],5:[function(require,module,exports){
-var bs = require('bikram-sambat');
-var eurodig = require('eurodigit');
-var from_dev = eurodig.to_int;
-var to_dev = eurodig.to_non_euro.devanagari;
-
-
-//> JQUERY SETUP
-
-$('.devanagari-number-input')
-  .on('keypress', function(e) {
-    var charCode = typeof e.which === 'number' ? e.which : e.keyCode;
-    if(charCode > 47) {
-      var $this = $(this);
-      var oldVal = $this.val();
-
-      var selectionStart = this.selectionStart;
-
-      $this.val(oldVal.slice(0, selectionStart) +
-          to_dev(String.fromCharCode(charCode)) +
-          oldVal.slice(this.selectionEnd));
-
-      this.selectionStart = this.selectionEnd = 1+selectionStart;
-
-      e.preventDefault();
-    }
-  })
-  .on('change', function() {
-    var $this = $(this);
-    $this.val(to_dev($this.val()));
-  });
-
-$('.bikram-sambat-input-group .dropdown-menu li a')
-  .on('click', function() {
-    var $this = $(this);
-    $this.parents('.input-group').find('input[name=month]').val(1+$this.parent('li').index());
-    $this.parents('.input-group-btn').find('.dropdown-toggle').html($this.text() + ' <span class="caret"></span>');
-  });
-
-
-//> HELPER FUNCTIONS
-
-function fieldValue($parent, selecter) {
-  return from_dev($parent.find(selecter).val());
-}
-
-
-//> EXPORTED FUNCTIONS
-
-window.bikram_sambat_bootstrap = {
-  getDate: function($inputGroup) {
-    var year = fieldValue($inputGroup, '[name=year]');
-    var month = fieldValue($inputGroup, '[name=month]');
-    var day = fieldValue($inputGroup, '[name=day]');
-    return bs.toGreg(year, month, day);
-  },
-};
-
-},{"bikram-sambat":7,"eurodigit":1}],6:[function(require,module,exports){
-'use strict';
-
-/* Magic number: 2406 is the char code for '०' */
-function replacer(c) { return String.fromCharCode(Number(c) + 2406); }
-
-module.exports = function(original) {
-	return original && original.toString().replace(/[0-9]/g, replacer);
-};
-
-},{}],7:[function(require,module,exports){
-var toDevanagari = require('eurodigit/src/to_devanagari');
+},{}],2:[function(require,module,exports){
+var toDevanagari = require('eurodigit/src/to_non_euro').devanagari;
 
 var MS_PER_DAY = 86400000;
 
@@ -205,4 +108,95 @@ module.exports = {
   toGreg: toGreg
 };
 
-},{"eurodigit/src/to_devanagari":6}]},{},[5]);
+},{"eurodigit/src/to_non_euro":1}],3:[function(require,module,exports){
+"use strict";
+module.exports = {
+	to_euro: require('./to_euro'),
+	to_int: require('./to_int'),
+	to_non_euro: require('./to_non_euro')
+};
+
+},{"./to_euro":4,"./to_int":5,"./to_non_euro":6}],4:[function(require,module,exports){
+'use strict';
+
+function replacer(c) {
+	c = c.charCodeAt(0);
+	if(c < 1642) return c - 1632; // western arabic
+	if(c < 1786) return c - 1776; // perso-arabic
+	return c - 2406; // devanagari
+}
+
+module.exports = function(original) {
+	return original && original.toString().replace(/[٠-٩۰-۹०-९]/g, replacer);
+};
+
+},{}],5:[function(require,module,exports){
+var to_euro = require('./to_euro');
+
+module.exports = function(s) {
+	return Number.parseInt(to_euro(s));
+};
+
+},{"./to_euro":4}],6:[function(require,module,exports){
+arguments[4][1][0].apply(exports,arguments)
+},{"dup":1}],7:[function(require,module,exports){
+var bs = require('bikram-sambat');
+var eurodig = require('eurodigit');
+var from_dev = eurodig.to_int;
+var to_dev = eurodig.to_non_euro.devanagari;
+
+
+//> JQUERY SETUP
+
+$('.devanagari-number-input')
+  .on('keypress', function(e) {
+    var charCode = typeof e.which === 'number' ? e.which : e.keyCode;
+
+    if(e.altKey || e.ctrlKey || e.metaKey ||
+        charCode < 48 || charCode > 57) return;
+
+    var $this = $(this);
+    var oldVal = $this.val();
+
+    var selectionStart = this.selectionStart;
+
+    $this.val(oldVal.slice(0, selectionStart) +
+        to_dev(String.fromCharCode(charCode)) +
+        oldVal.slice(this.selectionEnd));
+
+    this.selectionStart = this.selectionEnd = 1+selectionStart;
+
+    e.preventDefault();
+  })
+  .on('change', function() {
+    var $this = $(this);
+    $this.val(to_dev($this.val()));
+  });
+
+$('.bikram-sambat-input-group .dropdown-menu li a')
+  .on('click', function() {
+    var $this = $(this);
+    $this.parents('.input-group').find('input[name=month]').val(1+$this.parent('li').index());
+    $this.parents('.input-group-btn').find('.dropdown-toggle').html($this.text() + ' <span class="caret"></span>');
+  });
+
+
+//> HELPER FUNCTIONS
+
+function fieldValue($parent, selecter) {
+  return from_dev($parent.find(selecter).val());
+}
+
+
+//> EXPORTED FUNCTIONS
+
+window.bikram_sambat_bootstrap = {
+  getDate: function($inputGroup) {
+    var year = fieldValue($inputGroup, '[name=year]');
+    var month = fieldValue($inputGroup, '[name=month]');
+    var day = fieldValue($inputGroup, '[name=day]');
+    return bs.toGreg(year, month, day);
+  },
+};
+
+},{"bikram-sambat":2,"eurodigit":3}]},{},[7]);
