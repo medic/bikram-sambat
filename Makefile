@@ -1,6 +1,6 @@
 GRADLEW = ./gradlew --daemon --parallel
 
-.PHONY: default assemble-java test test-js test-java travis travis-deploy
+.PHONY: default assemble-java test test-js test-java travis release
 
 default: test assemble-java
 
@@ -16,6 +16,6 @@ test-java:
 	cd java && ${GRADLEW} test
 
 travis: test
-travis-deploy:
-	npm adduser dev@medicmobile.org
+
+release: test assemble-java
 	cd js && npm publish

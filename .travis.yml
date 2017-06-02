@@ -7,11 +7,3 @@ before_script:
 
 before_deploy:
   - "sed -i -E -e \"s/0\\.0\\.0/$TRAVIS_TAG/\" js/package.json"
-
-# TODO deploy java artifact here too
-# TODO make sure this works now JS is in a subdirectory
-deploy:
-  provider: script
-  on:
-    tags: true
-  script: make travis-deploy
