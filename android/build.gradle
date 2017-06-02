@@ -1,0 +1,73 @@
+buildscript {
+	repositories {
+		mavenCentral()
+		maven { url "https://jitpack.io" }
+		jcenter()
+	}
+	dependencies {
+		classpath 'com.android.tools.build:gradle:2.1.0'
+	}
+}
+apply plugin: 'com.android.application'
+
+// enable verbose lint warnings
+gradle.projectsEvaluated {
+	tasks.withType(JavaCompile) {
+		options.compilerArgs << '-Xlint:deprecation' << '-Xlint:unchecked'
+	}
+}
+
+repositories {
+	maven { url "${System.env.ANDROID_HOME}/extras/android/m2repository/" }
+	mavenCentral()
+	jcenter()
+}
+
+dependencies {
+}
+
+android {
+	compileSdkVersion 23
+	buildToolsVersion '23.0.3'
+
+	packagingOptions {
+		exclude 'META-INF/LICENSE'
+		exclude 'META-INF/NOTICE'
+	}
+
+	signingConfigs {
+		release {
+			storeFile file(System.env.ANDROID_KEYSTORE_PATH ?: signingConfigs.debug.storeFile)
+			storePassword System.env.ANDROID_KEYSTORE_PASSWORD ?: signingConfigs.debug.storePassword
+			keyAlias System.env.ANDROID_KEY_ALIAS ?: signingConfigs.debug.keyAlias
+			keyPassword System.env.ANDROID_KEY_PASSWORD ?: signingConfigs.debug.keyPassword
+		}
+	}
+
+	buildTypes {
+		release {
+			minifyEnabled true
+			shrinkResources true
+			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'config/proguard.pro'
+			signingConfig signingConfigs.release
+		}
+	}
+
+	lintOptions {
+		disable 'UnusedResources' // linter can't handle static imports, so just skip this test
+
+		warningsAsErrors true
+
+		xmlReport false
+	}
+
+	testOptions {
+		unitTests.all {
+			testLogging {
+				events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+				outputs.upToDateWhen { false }
+				showStandardStreams = true
+			}
+		}
+	}
+}
