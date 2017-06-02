@@ -17,5 +17,5 @@ test-java:
 
 travis: test
 travis-deploy:
-	echo "auth=${NPM_API_KEY}" > ~/.npmrc && echo "email=dev@medicmobile.org" >> ~/.npmrc
+	npm adduser
 	cd js && npm publish
