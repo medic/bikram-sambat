@@ -79,7 +79,7 @@ $('.bikram-sambat-input-group .dropdown-menu li a')
   .on('click', function() {
     var $this = $(this);
     $this.parents('.input-group').find('input[name=month]').val(1+$this.parent('li').index());
-    $this.parents('.input-group-btn').find('.dropdown-toggle').html($this.text());
+    $this.parents('.input-group-btn').find('.dropdown-toggle').html($this.text() + ' <span class="caret"></span>');
   });
 
 
