@@ -51,16 +51,21 @@ describe('bikram-sambat', function() {
     });
   });
 
-  describe('#toEuro_timestamp()', function() {
-    _.forIn(test_data_for('toEuro_timestamp'), function(data) {
+  describe('#toGreg()', function() {
+    const asDate = dateParts => dateParts.join('-');
+
+    _.forIn(test_data_for('toGreg'), function(data) {
 
       const [year, month, day] = data.bs;
-      const expectedTimestamp = data.expectedTimestamp;
+      const expectedGreg = data.expectedGreg;
 
-      it(`should convert ${year}-${month}-${day}BS to ${expectedTimestamp}`, function() {
+      it(`should convert ${asDate(data.bs)} BS to ${asDate(expectedGreg)} AD`, function() {
 
-        // expect
-        assert.equal(bs.toEuro_timestamp(year, month, day), expectedTimestamp);
+        // when
+        var actual = bs.toGreg(year, month, day);
+
+        // then
+        assert.deepEqual([actual.year, actual.month, actual.day], expectedGreg);
 
       });
 

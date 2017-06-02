@@ -59,9 +59,8 @@ function toBik_text(greg) {
   return toDevanagari(d.day) + ' ' + MONTH_NAMES[d.month-1] + ' ' + toDevanagari(d.year);
 }
 
-function toEuro_timestamp(year, month, day) {
+function toGreg(year, month, day) {
   var timestamp = BS_EPOCH_TS;
-  --day; // magic ;¬)
   while(year >= BS_YEAR_ZERO) {
     while(month >= 1) {
       while(day >= 1) {
@@ -75,7 +74,13 @@ function toEuro_timestamp(year, month, day) {
     month = 12;
     day = daysInMonth(year, month, day);
   }
-  return timestamp;
+
+  var d = new Date(timestamp);
+  return {
+    year: d.getUTCFullYear(),
+    month: 1+d.getUTCMonth(),
+    day: d.getUTCDate()
+  };
 }
 
 module.exports = {
@@ -83,5 +88,5 @@ module.exports = {
   toBik_dev: toBik_dev,
   toBik_euro: toBik_euro,
   toBik_text: toBik_text,
-  toEuro_timestamp: toEuro_timestamp
+  toGreg: toGreg
 };
