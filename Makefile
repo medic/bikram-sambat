@@ -1,8 +1,11 @@
 GRADLEW = ./gradlew --daemon --parallel
 
-.PHONY: default assemble-java test test-js test-java travis release
+.PHONY: default setup assemble-java test test-js test-java travis release
 
 default: test assemble-java
+
+setup:
+	cd js && npm install
 
 assemble-java:
 	cd java && ${GRADLEW} assemble
@@ -17,5 +20,5 @@ test-java:
 
 travis: test
 
-release: test assemble-java
+release: setup test assemble-java
 	cd js && npm publish
