@@ -44,8 +44,13 @@
         <div class="container">
             <h1>bikram sambat date-picker!</h1>
 
+            <!--
+                Note that the input types used are `tel`.  This is a hack:
+                  * if we use `input="number"` we cannot enter non-latin numerals in the field
+                  * if we use `input="text"` we don't get a numeric keypad on android or iphone
+              -->
             <div class="input-group bikram-sambat-input-group">
-                <input name="day" type="text" class="form-control devanagari-number-input" placeholder="गते" aria-label="गते">
+                <input name="day" type="tel" class="form-control devanagari-number-input" placeholder="गते" aria-label="गते" maxlength="2">
                 <input name="month" type="hidden">
                 <div class="input-group-btn">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -66,7 +71,7 @@
                         <li><a href="#">चैत</a></li>
                     </ul>
                 </div>
-                <input name="year" type="text" class="form-control devanagari-number-input" placeholder="साल" aria-label="साल">
+                <input name="year" type="tel" class="form-control devanagari-number-input" placeholder="साल" aria-label="साल" maxlength="4">
             </div>
 
 <pre>

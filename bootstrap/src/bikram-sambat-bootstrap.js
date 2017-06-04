@@ -7,26 +7,10 @@ var to_dev = eurodig.to_non_euro.devanagari;
 //> JQUERY SETUP
 
 $('.devanagari-number-input')
-  .on('keypress', function(e) {
-    var charCode = typeof e.which === 'number' ? e.which : e.keyCode;
-
-    if(e.altKey || e.ctrlKey || e.metaKey ||
-        charCode < 48 || charCode > 57) return;
-
-    var $this = $(this);
-    var oldVal = $this.val();
-
-    var selectionStart = this.selectionStart;
-
-    $this.val(oldVal.slice(0, selectionStart) +
-        to_dev(String.fromCharCode(charCode)) +
-        oldVal.slice(this.selectionEnd));
-
-    this.selectionStart = this.selectionEnd = 1+selectionStart;
-
-    e.preventDefault();
-  })
-  .on('change', function() {
+  // event support:
+  //   keypress: firefox
+  //   input: chrome for android
+  .on('input keypress', function() {
     var $this = $(this);
     $this.val(to_dev($this.val()));
   });
@@ -50,6 +34,7 @@ function fieldValue($parent, selecter) {
 
 window.bikram_sambat_bootstrap = {
   getDate: function($inputGroup) {
+    // TODO handle fields not set, out of bounds etc.
     var year = fieldValue($inputGroup, '[name=year]');
     var month = fieldValue($inputGroup, '[name=month]');
     var day = fieldValue($inputGroup, '[name=day]');
