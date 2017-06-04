@@ -1,20 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-'use strict';
-
-function from(base) {
-	function replacer(c) { return String.fromCharCode(Number(c) + base); }
-	return function(original) {
-		return original && original.toString().replace(/[0-9]/g, replacer);
-	};
-}
-
-module.exports = {
-	devanagari: from(2406),
-	eastern_arabic: from(1632),
-	perso_arabic: from(1776)
-};
-
-},{}],2:[function(require,module,exports){
 var toDevanagari = require('eurodigit/src/to_non_euro').devanagari;
 
 var MS_PER_DAY = 86400000;
@@ -108,7 +92,7 @@ module.exports = {
   toGreg: toGreg
 };
 
-},{"eurodigit/src/to_non_euro":1}],3:[function(require,module,exports){
+},{"eurodigit/src/to_non_euro":5}],2:[function(require,module,exports){
 "use strict";
 module.exports = {
 	to_euro: require('./to_euro'),
@@ -116,7 +100,7 @@ module.exports = {
 	to_non_euro: require('./to_non_euro')
 };
 
-},{"./to_euro":4,"./to_int":5,"./to_non_euro":6}],4:[function(require,module,exports){
+},{"./to_euro":3,"./to_int":4,"./to_non_euro":5}],3:[function(require,module,exports){
 'use strict';
 
 function replacer(c) {
@@ -130,16 +114,30 @@ module.exports = function(original) {
 	return original && original.toString().replace(/[٠-٩۰-۹०-९]/g, replacer);
 };
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 var to_euro = require('./to_euro');
 
 module.exports = function(s) {
 	return Number.parseInt(to_euro(s));
 };
 
-},{"./to_euro":4}],6:[function(require,module,exports){
-arguments[4][1][0].apply(exports,arguments)
-},{"dup":1}],7:[function(require,module,exports){
+},{"./to_euro":3}],5:[function(require,module,exports){
+'use strict';
+
+function from(base) {
+	function replacer(c) { return String.fromCharCode(Number(c) + base); }
+	return function(original) {
+		return original && original.toString().replace(/[0-9]/g, replacer);
+	};
+}
+
+module.exports = {
+	devanagari: from(2406),
+	eastern_arabic: from(1632),
+	perso_arabic: from(1776)
+};
+
+},{}],6:[function(require,module,exports){
 var bs = require('bikram-sambat');
 var eurodig = require('eurodigit');
 var from_dev = eurodig.to_int;
@@ -149,26 +147,10 @@ var to_dev = eurodig.to_non_euro.devanagari;
 //> JQUERY SETUP
 
 $('.devanagari-number-input')
-  .on('keypress', function(e) {
-    var charCode = typeof e.which === 'number' ? e.which : e.keyCode;
-
-    if(e.altKey || e.ctrlKey || e.metaKey ||
-        charCode < 48 || charCode > 57) return;
-
-    var $this = $(this);
-    var oldVal = $this.val();
-
-    var selectionStart = this.selectionStart;
-
-    $this.val(oldVal.slice(0, selectionStart) +
-        to_dev(String.fromCharCode(charCode)) +
-        oldVal.slice(this.selectionEnd));
-
-    this.selectionStart = this.selectionEnd = 1+selectionStart;
-
-    e.preventDefault();
-  })
-  .on('change', function() {
+  // event support:
+  //   keypress: firefox
+  //   input: chrome for android
+  .on('input keypress', function() {
     var $this = $(this);
     $this.val(to_dev($this.val()));
   });
@@ -192,6 +174,7 @@ function fieldValue($parent, selecter) {
 
 window.bikram_sambat_bootstrap = {
   getDate: function($inputGroup) {
+    // TODO handle fields not set, out of bounds etc.
     var year = fieldValue($inputGroup, '[name=year]');
     var month = fieldValue($inputGroup, '[name=month]');
     var day = fieldValue($inputGroup, '[name=day]');
@@ -199,4 +182,4 @@ window.bikram_sambat_bootstrap = {
   },
 };
 
-},{"bikram-sambat":2,"eurodigit":3}]},{},[7]);
+},{"bikram-sambat":1,"eurodigit":2}]},{},[6]);
