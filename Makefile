@@ -1,29 +1,34 @@
 GRADLEW = ./gradlew --daemon --parallel
 
-.PHONY: default setup assemble-java test test-js test-java travis release
+.PHONY: default setup-js assemble-java test test-js test-java travis release-js release-bootstrap
 
 default: test assemble-java
 
-setup:
-	cd js && npm install
-
-assemble-java:
-	cd java && ${GRADLEW} assemble
-
 test: test-js test-java
+
+setup-js:
+	cd js && npm install
 
 test-js:
 	cd js && grunt
+
+release-js: setup test-js
+	cd js && \
+		../scripts/write-version-number js $$(git describe --abbrev=0 --tags) && \
+		npm publish
+
+setup-bootstrap:
+	cd bootstrap && npm install
+
+release-bootstrap: setup-bootstrap
+	cd bootstrap && \
+		../scripts/write-version-number bootstrap $$(git describe --abbrev=0 --tags) && \
+		npm publish
+
+assemble-java:
+	cd java && ${GRADLEW} assemble
 
 test-java:
 	cd java && ${GRADLEW} test
 
 travis: test
-
-release: setup test assemble-java
-	cd js && \
-		../scripts/write-version-number $$(git describe --abbrev=0 --tags) && \
-		npm publish
-	cd bootstrap && \
-		../scripts/write-version-number $$(git describe --abbrev=0 --tags) && \
-		npm publish

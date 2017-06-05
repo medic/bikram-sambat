@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 
-const v = process.argv[2];
+const vPrefix = process.argv[2] + '-';
+const tag = process.argv[3];
+
+if(!tag.startsWith(vPrefix)) throw new Error(`Tag information looks wrong for module ${module}: ${v}`);
+
+const v = tag.substring(vPrefix.length);
 
 const fs = require('fs');
 const pkg = JSON.parse(fs.readFileSync('package.json').toString());
