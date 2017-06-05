@@ -147,13 +147,15 @@ var to_dev = eurodig.to_non_euro.devanagari;
 //> JQUERY SETUP
 
 $('.devanagari-number-input')
-  // event support:
-  //   keypress: firefox
-  //   input: chrome for android
-  .on('input keypress', function() {
+  // Because we change the content of the input field, we must be careful to
+  // preserve the caret position from before the change.
+  .on('input', function() {
     var $this = $(this);
+    var selectionStart = this.selectionStart;
     $this.val(to_dev($this.val()));
-  });
+    this.selectionStart = this.selectionEnd = selectionStart;
+  })
+  ;
 
 $('.bikram-sambat-input-group .dropdown-menu li a')
   .on('click', function() {
