@@ -12,7 +12,7 @@ setup-js:
 test-js:
 	cd js && grunt
 
-release-js: setup test-js
+release-js: setup-js test-js
 	cd js && \
 		../scripts/write-version-number js $$(git describe --abbrev=0 --tags) && \
 		npm publish
