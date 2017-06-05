@@ -2,7 +2,7 @@
   "name": "bikram-sambat-bootstrap",
   "version": "0.0.0",
   "description": "bikram sambat datepicker for bootstrap",
-  "main": "index.js",
+  "main": "src/bikram-sambat-bootstrap.js",
   "scripts": {
     "build": "./node_modules/browserify/bin/cmd.js -e ./src/bikram-sambat-bootstrap.js -o dist/bikram-sambat-bs.js",
     "server": "./node_modules/http-server/bin/http-server dist",
