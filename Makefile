@@ -24,3 +24,6 @@ release: setup test assemble-java
 	cd js && \
 		../scripts/write-version-number $$(git describe --abbrev=0 --tags) && \
 		npm publish
+	cd bootstrap && \
+		../scripts/write-version-number $$(git describe --abbrev=0 --tags) && \
+		npm publish
