@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- .alert is appended to the package name to fix Samsung AlarmListener bug as per
+  https://code.google.com/p/android/issues/detail?id=82001
+  https://stackoverflow.com/questions/34074955/android-exact-alarm-is-always-3-minutes-off/34085645 -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:installLocation="internalOnly"
+		package="bikram.sambat">
+
+	<uses-sdk android:minSdkVersion="16"
+			tools:ignore="OldTargetApi"
+			android:targetSdkVersion="23"/>
+			<!-- TODO update the targetSdkVersion and remove the lint warning
+			   suppression above once Robolectric supports values greater than 23 -->
+
+	<application android:label="@string/app_name"
+			android:allowBackup="false"
+			android:supportsRtl="false"
+			tools:ignore="GoogleAppIndexingWarning">
+
+		<activity android:name="StartupActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN"/>
+				<category android:name="android.intent.category.LAUNCHER"/>
+			</intent-filter>
+		</activity>
+
+	</application>
+
+</manifest>

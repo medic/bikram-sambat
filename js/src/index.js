@@ -79,8 +79,7 @@ function toGreg(year, month, day) {
       }
       day = daysInMonth(year, --month);
     }
-    month = 12;
-    day = daysInMonth(--year, month);
+    day = daysInMonth(--year, month = 12);
   }
 
   var d = new Date(timestamp);

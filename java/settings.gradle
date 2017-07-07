@@ -1,0 +1,5 @@
+rootProject.name = 'bikram-sambat'
+
+include ':lib'
+include ':android-lib'
+include ':android-demo-app'

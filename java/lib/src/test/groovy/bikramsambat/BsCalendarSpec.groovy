@@ -53,7 +53,18 @@ class BsCalendarSpec extends Specification {
 			testCase << testJson('daysInMonth')
 	}
 
+	@Unroll
+	def 'toGreg() for #testCase'(testCase) {
+		given:
+			def bsDate = new BikramSambatDate(testCase.bs[0], testCase.bs[1], testCase.bs[2])
+			def expectedGreg = new BsGregorianDate(testCase.expectedGreg[0], testCase.expectedGreg[1], testCase.expectedGreg[2])
+		expect:
+			bs.toGreg(bsDate) == expectedGreg
+		where:
+			testCase << testJson('toGreg')
+	}
+
 	private def testJson(fnName) {
-		new JsonSlurper().parseText(new File("../test-data/${fnName}.json").text)
+		new JsonSlurper().parseText(new File("../../test-data/${fnName}.json").text)
 	}
 }
