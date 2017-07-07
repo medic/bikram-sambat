@@ -33,8 +33,16 @@ public final class BsCalendar {
 				(((month-1) << 1))) & 3);
 	}
 
+	public BikramSambatDate toBik(BsGregorianDate greg) {
+		// TODO
+	}
+
+	public BikramSambatDate toGreg(BikramSambatDate bik) {
+		// TODO
+	}
+
 	public String toBik_euro(String greg) throws BsException {
-		BsDate d = toBik(greg);
+		BikramSambatDate d = toBik(greg);
 		return d.year + "-" + zPad(d.month) + "-" + zPad(d.day);
 	}
 
@@ -43,7 +51,7 @@ public final class BsCalendar {
 	}
 
 	public String toBik_text(String greg) throws BsException {
-		BsDate d = toBik(greg);
+		BikramSambatDate d = toBik(greg);
 		return devanagari.toDev(d.day) + " " + _MONTH_NAMES[d.month-1] + " " + devanagari.toDev(d.year);
 	}
 
@@ -53,7 +61,7 @@ public final class BsCalendar {
 	 *  2007 <- The year (BS) whose first day is our Bikram Sambat Epoch (BSE)
 	 *  -622359900000 <- unix timestamp of BSE ('1950-4-13')
 	 */
-	private BsDate toBik(String greg) throws BsException {
+	private BikramSambatDate toBik(String greg) throws BsException {
 		int year = 2007;
 		int days;
 		try {
@@ -65,7 +73,7 @@ public final class BsCalendar {
 		while(days > 0) {
 			for(int m=1; m<=12; ++m) {
 				int dM = daysInMonth(year, m);
-				if(days <= dM) return new BsDate(year, m, days);
+				if(days <= dM) return new BikramSambatDate(year, m, days);
 				days -= dM;
 			}
 			++year;
@@ -78,17 +86,5 @@ public final class BsCalendar {
 
 	private long parseDate(String date) throws ParseException {
 		return new SimpleDateFormat("yyyy-MM-dd").parse(date).getTime();
-	}
-}
-
-class BsDate {
-	final int year;
-	final int month;
-	final int day;
-
-	BsDate(int year, int month, int day) {
-		this.year = year;
-		this.month = month;
-		this.day = day;
 	}
 }
