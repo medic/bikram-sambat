@@ -88,6 +88,8 @@ console.log('Date set to:', bikram_sambat_bootstrap.getDate($('.bikram-sambat-in
 
         <script type="text/javascript" src="./bikram-sambat-bs.js"></script>
         <script>
+            bikram_sambat_bootstrap.initListeners();
+
             $('#update-gregorian').on('click', function() {
                 var greg = bikram_sambat_bootstrap.getDate($('.bikram-sambat-input-group'));
                 var gregString = greg.year + '-' + greg.month + '-' + greg.day;
