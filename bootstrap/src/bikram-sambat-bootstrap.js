@@ -73,11 +73,14 @@ function fieldValue($parent, selecter) {
 module.exports = window.bikram_sambat_bootstrap = {
   addChangeListener: addChangeListener,
   getDate: function($inputGroup) {
-    // TODO handle fields not set, out of bounds etc.
     var year = fieldValue($inputGroup, '[name=year]');
     var month = fieldValue($inputGroup, '[name=month]');
     var day = fieldValue($inputGroup, '[name=day]');
-    return bs.toGreg(year, month, day);
+    try {
+      return bs.toGreg(year, month, day);
+    } catch(e) {
+      return null;
+    }
   },
   initListeners: initListeners,
 };
