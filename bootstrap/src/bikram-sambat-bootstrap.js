@@ -6,6 +6,28 @@ var to_dev = eurodig.to_non_euro.devanagari;
 
 //> JQUERY SETUP
 
+function addChangeListener($parent, selecters, onChange) {
+  if(arguments.length === 1) {
+    onChange = $parent;
+    selecters = {};
+    $parent = $('body');
+  } else if(arguments.length === 2) {
+    onChange = selecters;
+    if($parent instanceof jQuery) {
+      selecters = {};
+    } else {
+      selecters = $parent;
+      $parent = $('body');
+    }
+  }
+
+  $parent.find(selecters.numberInput || '.devanagari-number-input')
+    .on('input', onChange);
+
+  $parent.find(selecters.monthToggle || '.bikram-sambat-input-group .dropdown-menu li a')
+    .on('click', onChange);
+}
+
 function initListeners($parent, selecters) {
   if(arguments.length === 0) {
     selecters = {};
@@ -49,6 +71,7 @@ function fieldValue($parent, selecter) {
 //> EXPORTED FUNCTIONS
 
 module.exports = window.bikram_sambat_bootstrap = {
+  addChangeListener: addChangeListener,
   getDate: function($inputGroup) {
     // TODO handle fields not set, out of bounds etc.
     var year = fieldValue($inputGroup, '[name=year]');
