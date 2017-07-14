@@ -19,12 +19,16 @@ var BS_LAST_YEAR = BS_YEAR_ZERO + ENCODED_MONTH_LENGTHS.length - 1;
 
 /**
  * Magic numbers:
- *   2000 <- the first year encoded in ENCODED_MONTH_LENGTHS
+ *   2000 <- the first year (BS) encoded in ENCODED_MONTH_LENGTHS
  *   month #5 <- this is the only month which has a day variation of more than 1
  *   & 3 <- this is a 2 bit mask, i.e. 0...011
  */
 function daysInMonth(year, month) {
-  return 29 + ((ENCODED_MONTH_LENGTHS[year - 2000] >>>
+  // TODO why does this accept 0?
+  if(month < 0 || month > 12) throw new Error('Invalid month value ' + month);
+  var delta = ENCODED_MONTH_LENGTHS[year - 2000];
+  if(typeof delta === 'undefined') throw new Error('No data for year: ' + year + ' BS');
+  return 29 + ((delta >>>
       (((month-1) << 1))) & 3);
 }
 
@@ -62,8 +66,9 @@ function toBik_text(greg) {
 }
 
 function toGreg(year, month, day) {
-  if(month < 1 || month > 12) throw new Error('Invalid month value', month);
-  if(year < BS_YEAR_ZERO || year > BS_LAST_YEAR) throw new Error('No data for year ' + year + ' BS');
+  // TODO month bounds-checking should be handled in daysInMonth()
+  if(month < 1) throw new Error('Invalid month value ' + month);
+  if(year < BS_YEAR_ZERO) throw new Error('Invalid year value ' + year);
   if(day < 1 || day > daysInMonth(year, month)) throw new Error('Invalid day value', day);
 
   var timestamp = BS_EPOCH_TS;
@@ -74,11 +79,11 @@ function toGreg(year, month, day) {
         --day;
       }
       --month;
-      day = daysInMonth(year, month, day);
+      day = daysInMonth(year, month);
     }
     --year;
     month = 12;
-    day = daysInMonth(year, month, day);
+    day = daysInMonth(year, month);
   }
 
   var d = new Date(timestamp);
@@ -89,10 +94,16 @@ function toGreg(year, month, day) {
   };
 }
 
+function toGreg_text(year, month, day) {
+  var d = toGreg(year, month, day);
+  return d.year + '-' + zPad(d.month) + '-' + zPad(d.day);
+}
+
 module.exports = {
   daysInMonth: daysInMonth,
   toBik_dev: toBik_dev,
   toBik_euro: toBik_euro,
   toBik_text: toBik_text,
-  toGreg: toGreg
+  toGreg: toGreg,
+  toGreg_text: toGreg_text
 };

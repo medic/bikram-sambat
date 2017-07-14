@@ -74,7 +74,7 @@ describe('bikram-sambat', function() {
     it('should throw Error if year is too small', () => {
 
       assert.throw(() =>
-        bs.toGreg(1, 1, 1));
+        bs.toGreg(2006, 1, 1));
 
     });
 
@@ -82,6 +82,13 @@ describe('bikram-sambat', function() {
 
       assert.throw(() =>
         bs.toGreg(9999, 1, 1));
+
+    });
+
+    it('should throw Error if year is NaN', () => {
+
+      assert.throw(() =>
+        bs.toGreg('', 1, 1));
 
     });
 
@@ -97,6 +104,20 @@ describe('bikram-sambat', function() {
       assert.throw(() =>
         bs.toGreg(2033, 13, 1));
 
+    })
+
+    it('should throw Error if month is NaN', () => {
+
+      assert.throw(() =>
+        bs.toGreg(2033, '', 1));
+
+    })
+
+    it('should throw Error if day is too small', () => {
+
+      assert.throw(() =>
+        bs.toGreg(2033, 1, 0));
+
     });
 
     it('should throw Error if day is too small', () => {
@@ -106,13 +127,23 @@ describe('bikram-sambat', function() {
 
     });
 
-    it('should throw Error if day is too big', () => {
+    it('should throw Error if day is NaN', () => {
 
       assert.throw(() =>
-        bs.toGreg(2033, 1, 33));
+        bs.toGreg(2033, 1, ''));
 
     });
 
+  });
+
+  describe('#toGreg()', function() {
+
+    it('should translate a bikram date to a zero-padded string', () => {
+
+      // expect
+      assert.equal('1955-01-01', bs.toGreg_text(2011, 9, 17));
+
+    });
   });
 
   describe('#daysInMonth()', function() {
