@@ -74,16 +74,13 @@ function toGreg(year, month, day) {
   var timestamp = BS_EPOCH_TS;
   while(year >= BS_YEAR_ZERO) {
     while(month >= 1) {
-      while(day >= 1) {
+      while(--day >= 0) {
         timestamp += MS_PER_DAY;
-        --day;
       }
-      --month;
-      day = daysInMonth(year, month);
+      day = daysInMonth(year, --month);
     }
-    --year;
     month = 12;
-    day = daysInMonth(year, month);
+    day = daysInMonth(--year, month);
   }
 
   var d = new Date(timestamp);
