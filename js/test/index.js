@@ -70,6 +70,49 @@ describe('bikram-sambat', function() {
       });
 
     });
+
+    it('should throw Error if year is too small', () => {
+
+      assert.throw(() =>
+        bs.toGreg(1, 1, 1));
+
+    });
+
+    it('should throw Error if year is too big', () => {
+
+      assert.throw(() =>
+        bs.toGreg(9999, 1, 1));
+
+    });
+
+    it('should throw Error if month is too small', () => {
+
+      assert.throw(() =>
+        bs.toGreg(2033, 0, 1));
+
+    });
+
+    it('should throw Error if month is too big', () => {
+
+      assert.throw(() =>
+        bs.toGreg(2033, 13, 1));
+
+    });
+
+    it('should throw Error if day is too small', () => {
+
+      assert.throw(() =>
+        bs.toGreg(2033, 1, 0));
+
+    });
+
+    it('should throw Error if day is too big', () => {
+
+      assert.throw(() =>
+        bs.toGreg(2033, 1, 33));
+
+    });
+
   });
 
   describe('#daysInMonth()', function() {

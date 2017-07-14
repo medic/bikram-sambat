@@ -15,6 +15,8 @@ var ENCODED_MONTH_LENGTHS = [
     ],
     MONTH_NAMES = ['बैशाख', 'जेठ', 'असार', 'साउन', 'भदौ', 'असोज', 'कार्तिक', 'मंसिर', 'पौष', 'माघ', 'फाल्गुन', 'चैत'];
 
+var BS_LAST_YEAR = BS_YEAR_ZERO + ENCODED_MONTH_LENGTHS.length - 1;
+
 /**
  * Magic numbers:
  *   2000 <- the first year encoded in ENCODED_MONTH_LENGTHS
@@ -60,6 +62,10 @@ function toBik_text(greg) {
 }
 
 function toGreg(year, month, day) {
+  if(month < 1 || month > 12) throw new Error('Invalid month value', month);
+  if(year < BS_YEAR_ZERO || year > BS_LAST_YEAR) throw new Error('No data for year ' + year + ' BS');
+  if(day < 1 || day > daysInMonth(year, month)) throw new Error('Invalid day value', day);
+
   var timestamp = BS_EPOCH_TS;
   while(year >= BS_YEAR_ZERO) {
     while(month >= 1) {
