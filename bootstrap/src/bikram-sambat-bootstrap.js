@@ -82,5 +82,15 @@ module.exports = window.bikram_sambat_bootstrap = {
       return null;
     }
   },
+  getDate_text: function($inputGroup) {
+    var year = fieldValue($inputGroup, '[name=year]');
+    var month = fieldValue($inputGroup, '[name=month]');
+    var day = fieldValue($inputGroup, '[name=day]');
+    try {
+      return bs.toGreg_text(year, month, day);
+    } catch(e) {
+      return null;
+    }
+  },
   initListeners: initListeners,
 };
