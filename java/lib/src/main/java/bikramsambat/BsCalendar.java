@@ -35,10 +35,12 @@ public final class BsCalendar {
 
 	public BikramSambatDate toBik(BsGregorianDate greg) {
 		// TODO
+		return null;
 	}
 
-	public BikramSambatDate toGreg(BikramSambatDate bik) {
+	public BsGregorianDate toGreg(BikramSambatDate bik) {
 		// TODO
+		return null;
 	}
 
 	public String toBik_euro(String greg) throws BsException {

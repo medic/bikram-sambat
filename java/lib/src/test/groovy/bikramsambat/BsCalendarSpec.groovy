@@ -54,6 +54,6 @@ class BsCalendarSpec extends Specification {
 	}
 
 	private def testJson(fnName) {
-		new JsonSlurper().parseText(new File("../test-data/${fnName}.json").text)
+		new JsonSlurper().parseText(new File("../../test-data/${fnName}.json").text)
 	}
 }

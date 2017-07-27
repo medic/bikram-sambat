@@ -2,7 +2,7 @@ GRADLEW = ./gradlew --daemon --parallel
 
 .PHONY: default setup-js assemble-java test test-js test-java travis release-js release-bootstrap
 
-default: test assemble-java
+default: test assemble-java deploy-android
 
 test: test-js test-java
 
@@ -30,5 +30,8 @@ assemble-java:
 
 test-java:
 	cd java && ${GRADLEW} test
+
+deploy-android:
+	cd java && ${GRADLEW} :android-demo-app:installDebug
 
 travis: test

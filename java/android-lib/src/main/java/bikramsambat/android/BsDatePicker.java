@@ -1,11 +1,15 @@
 package bikramsambat.android;
 
+import bikramsambat.BsCalendar;
+import bikramsambat.BikramSambatDate;
+import bikramsambat.BsGregorianDate;
+
 public class BsDatePicker {
 	private int year;
 	private int month;
 	private int day;
 
-	public void getDate_bs() {
+	public BikramSambatDate getDate_bs() {
 		return new BikramSambatDate(year, month, day);
 	}
 
