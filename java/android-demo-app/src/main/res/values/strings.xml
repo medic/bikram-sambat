@@ -4,4 +4,19 @@
 
 	<string name="btnOk">OK</string>
 	<string name="btnCancel">OK</string>
+
+	<string-array name="spnMonths">
+		<item>बैशाख</item>
+		<item>जेठ</item>
+		<item>असार</item>
+		<item>साउन</item>
+		<item>भदौ</item>
+		<item>असोज</item>
+		<item>कार्तिक</item>
+		<item>मंसिर</item>
+		<item>पौष</item>
+		<item>माघ</item>
+		<item>फाल्गुन</item>
+		<item>चैत</item>
+	</string-array>
 </resources>

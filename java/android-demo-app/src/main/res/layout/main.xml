@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:scrollbars="vertical"
+		android:fillViewport="true">
+	<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:paddingLeft="16dp"
+			android:paddingRight="16dp"
+			android:orientation="vertical">
+		<LinearLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="16dp"
+				android:orientation="horizontal">
+			<!-- TODO stop these from changing width -->
+			<EditText android:id="@+id/txtDay"
+					android:singleLine="true"
+					android:maxLength="2"
+					android:inputType="number"
+					android:layout_weight="0.5"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+			<Spinner android:id="@+id/spnMonth"
+					android:entries="@array/spnMonths"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="16dp"/>
+			<!-- TODO stop these from changing width -->
+			<EditText android:id="@+id/txtYear"
+					android:singleLine="true"
+					android:maxLength="4"
+					android:inputType="number"
+					android:layout_weight="0.5"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+		</LinearLayout>
+		<Button android:id="@+id/btnOk"
+				android:text="@string/btnOk"
+				android:onClick="click_ok"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:paddingLeft="16dp"
+				android:paddingRight="16dp"/>
+	</LinearLayout>
+</ScrollView>
