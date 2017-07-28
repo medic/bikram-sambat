@@ -104,14 +104,14 @@ describe('bikram-sambat', function() {
       assert.throw(() =>
         bs.toGreg(2033, 13, 1));
 
-    })
+    });
 
     it('should throw Error if month is NaN', () => {
 
       assert.throw(() =>
         bs.toGreg(2033, '', 1));
 
-    })
+    });
 
     it('should throw Error if day is too small', () => {
 

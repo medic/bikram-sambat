@@ -15,8 +15,6 @@ var ENCODED_MONTH_LENGTHS = [
     ],
     MONTH_NAMES = ['बैशाख', 'जेठ', 'असार', 'साउन', 'भदौ', 'असोज', 'कार्तिक', 'मंसिर', 'पौष', 'माघ', 'फाल्गुन', 'चैत'];
 
-var BS_LAST_YEAR = BS_YEAR_ZERO + ENCODED_MONTH_LENGTHS.length - 1;
-
 /**
  * Magic numbers:
  *   2000 <- the first year (BS) encoded in ENCODED_MONTH_LENGTHS

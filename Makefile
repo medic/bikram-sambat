@@ -18,7 +18,7 @@ setup-js:
 	cd js && npm install
 
 test-js:
-	cd js && grunt
+	cd js && npm test
 
 release-js: setup-js test-js
 	cd js && \

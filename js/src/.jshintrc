@@ -1,0 +1,7 @@
+{
+  "extends": "../.jshintrc",
+
+  "esversion": 3,
+  "node": false,
+  "predef": [ "module", "require" ]
+}

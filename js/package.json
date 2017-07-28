@@ -4,7 +4,8 @@
   "description": "JS utilities for converting between the Nepali Bikram Sambat (Vikram Samvat) and Gregorian (standard European) calendars.",
   "main": "src/index.js",
   "scripts": {
-    "test": "grunt test"
+    "jshint": "jshint package.json test/*.js src/*.js",
+    "test": "npm run jshint && mocha test/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -27,8 +28,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "grunt": "^1.0.1",
-    "grunt-contrib-jshint": "^1.1.0",
-    "grunt-mocha-test": "^0.13.2",
+    "jshint": "^2.9.5",
     "lodash": "^4.17.4",
     "mocha": "^3.2.0"
   },
