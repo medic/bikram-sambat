@@ -1,9 +1,35 @@
-language: java
+language: android
 script: make travis
 
+android:
+  components:
+    # some travis/android magic from https://github.com/travis-ci/travis-ci/issues/5036
+    - tools
+    - platform-tools
+
+    # The BuildTools version used by your project
+    - build-tools-23.0.3
+
+    # The SDK version used to compile your project
+    - android-23
+
+    # Additional components
+    #- extra-android-m2repository
+
+    # Specify at least one system image,
+    # if you need to run emulator(s) during your tests
+    #- sys-img-armeabi-v7a-android-23
+env:
+- GRADLE_OPTS="-XX:MaxPermSize=512m"
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
 before_script:
   - nvm install node && nvm use node
-  - (cd js && npm install -g grunt-cli && npm install)
+  - (cd js && npm install)
 
 before_deploy:
   - "sed -i -E -e \"s/0\\.0\\.0/$TRAVIS_TAG/\" js/package.json"
