@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 dependencies {
 	compile project(':lib')
@@ -9,7 +9,6 @@ android {
 	buildToolsVersion '23.0.3'
 
 	defaultConfig {
-		applicationId 'bikramsambat.android'
 		minSdkVersion 15
 		targetSdkVersion 23
 		versionCode 1

@@ -38,9 +38,26 @@
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"/>
 		</LinearLayout>
-		<Button android:id="@+id/btnOk"
-				android:text="@string/btnOk"
-				android:onClick="click_ok"
+		<Button android:id="@+id/btnConvert"
+				android:text="@string/btnConvert"
+				android:onClick="click_convert"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:paddingLeft="16dp"
+				android:paddingRight="16dp"/>
+
+		<TextView android:id="@+id/txtDialog_bik"
+				android:top="4dp"
+				android:text="(dialog selection in BS goes here)"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		<TextView android:id="@+id/txtDialog_greg"
+				android:text="(dialog selection in AD goes here)"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		<Button android:id="@+id/btnShowDialog"
+				android:text="@string/btnShowDialog"
+				android:onClick="click_showDialog"
 				android:layout_height="wrap_content"
 				android:layout_width="wrap_content"
 				android:paddingLeft="16dp"

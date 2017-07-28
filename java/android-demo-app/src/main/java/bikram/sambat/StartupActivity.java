@@ -2,6 +2,8 @@ package bikram.sambat;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,15 +11,19 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import bikramsambat.BikramSambatDate;
 import bikramsambat.BsCalendar;
 import bikramsambat.BsGregorianDate;
 import bikramsambat.DevanagariDigitConverter;
+import bikramsambat.android.BsDatePickerDialog;
 
 import java.util.LinkedList;
 
+import static android.content.DialogInterface.BUTTON_POSITIVE;
 import static bikram.sambat.BsLog.trace;
+import static bikramsambat.android.BsDatePickerUtils.asDevanagariNumberInput;
 
 public class StartupActivity extends Activity {
 	private static final DevanagariDigitConverter convert = DevanagariDigitConverter.getInstance();
@@ -28,12 +34,12 @@ public class StartupActivity extends Activity {
 
 		setContentView(R.layout.main);
 
-		asDevanagariNumberInput(R.id.txtDay);
-		asDevanagariNumberInput(R.id.txtYear);
+		asDevanagariNumberInput(this, R.id.txtDay);
+		asDevanagariNumberInput(this, R.id.txtYear);
 	}
 
 //> CUSTOM EVENT HANDLERS
-	public void click_ok(View v) {
+	public void click_convert(View v) {
 		final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 		LinkedList<String> content = new LinkedList<>();
 
@@ -56,28 +62,20 @@ public class StartupActivity extends Activity {
 		dialog.create().show();
 	}
 
+	public void click_showDialog(View v) {
+		final BsDatePickerDialog d = new BsDatePickerDialog(this);
+		d.setButton(BUTTON_POSITIVE, "Okeyzi", new OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				text(R.id.txtDialog_bik, (d.getDate_bs() + " BS"));
+				text(R.id.txtDialog_greg, (d.getDate_greg() + " AD"));
+			}
+		});
+		d.show();
+	}
+
 //> PRIVATE HELPERS
 	private BikramSambatDate getDate() {
 		return new BikramSambatDate(getYear(), getMonth(), getDay());
-	}
-
-	private void asDevanagariNumberInput(int id) {
-		final EditText e = (EditText) findViewById(id);
-		e.addTextChangedListener(new TextWatcher() {
-			public void afterTextChanged(Editable s) {
-			}
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				int caret = start + count;
-
-				String translated = convert.toDev(s);
-				
-				if(!s.toString().equals(translated)) {
-					e.setText(translated);
-					e.setSelection(caret);
-				}
-			}
-		});
 	}
 
 	/** @return day of month, or {@code 0} if value could not be read */
@@ -106,5 +104,10 @@ public class StartupActivity extends Activity {
 	private String text(int componentId) {
 		EditText field = (EditText) findViewById(componentId);
 		return field.getText().toString();
+	}
+
+	private void text(int componentId, String value) {
+		TextView field = (TextView) findViewById(componentId);
+		field.setText(value);
 	}
 }

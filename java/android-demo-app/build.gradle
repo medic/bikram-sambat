@@ -25,7 +25,7 @@ repositories {
 
 dependencies {
 	compile project(':lib')
-	project(':android-lib')
+	compile project(':android-lib')
 }
 
 android {

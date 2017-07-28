@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="16dp"
+		android:orientation="horizontal">
+	<!-- TODO stop these from changing width -->
+	<EditText android:id="@+id/txtDay"
+			android:singleLine="true"
+			android:maxLength="2"
+			android:inputType="number"
+			android:layout_weight="1"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"/>
+	<Spinner android:id="@+id/spnMonth"
+			android:entries="@array/spnMonths"
+			android:layout_weight="1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="16dp"/>
+	<!-- TODO stop these from changing width -->
+	<EditText android:id="@+id/txtYear"
+			android:singleLine="true"
+			android:maxLength="4"
+			android:inputType="number"
+			android:layout_weight="1"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"/>
+</LinearLayout>
