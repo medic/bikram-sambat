@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 
 import bikramsambat.DevanagariDigitConverter;
@@ -17,6 +18,8 @@ public final class BsDatePickerUtils {
 			e = (EditText) ((Activity) parent).findViewById(id);
 		} else if(parent instanceof Dialog) {
 			e = (EditText) ((Dialog) parent).findViewById(id);
+		} else if(parent instanceof View) {
+			e = (EditText) ((View) parent).findViewById(id);
 		} else throw new IllegalArgumentException("No handling for parent of type: " + parent.getClass());
 
 		e.addTextChangedListener(new TextWatcher() {
