@@ -86,7 +86,7 @@ public class BsDatePickerDialog extends AlertDialog {
 	private void setDay(int day) { text(R.id.txtDay, Integer.toString(day)); }
 	private void setMonth(int month) {
 		Spinner s = (Spinner) findViewById(R.id.spnMonth);
-		s.setSelection(month);
+		s.setSelection(month - 1);
 	}
 	private void setYear(int year) { text(R.id.txtYear, Integer.toString(year)); }
 
