@@ -83,7 +83,11 @@ System.out.println(bik + " -> " + timestamp);
 	}
 
 	public BikramSambatDate toBik(BsGregorianDate greg) throws BsException {
-		return toBik(greg.year + "-" + zPad(greg.month) + "-" + zPad(greg.day));
+		return toBik(greg.year, greg.month, greg.day);
+	}
+
+	public BikramSambatDate toBik(int year, int month, int day) throws BsException {
+		return toBik(year + "-" + zPad(month) + "-" + zPad(day));
 	}
 
 	/**
