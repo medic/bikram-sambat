@@ -1,0 +1,53 @@
+#!/bin/bash -eu
+
+if ! [[ "${TRAVIS_TAG-}" = java-* ]] && ! [[ "${TRAVIS_BRANCH-}" = "master" ]]; then
+	echo "[maven-deploy] This build is not tagged for java release.  Will not be uploaded to maven."
+	exit 1
+fi
+
+if [[ "${TRAVIS_BRANCH-}" = "master" ]]; then
+	version="SNAPSHOT"
+else
+	version="${TRAVIS_TAG##*-}"
+fi
+
+echo "[maven-deploy] Version: ${version}"
+
+if [[ -z "$STAGING_URL" ]]; then
+	echo "[maven-deploy] Missing required env var: STAGING_URL"
+	exit 1
+fi
+
+if ! [[ "$#" = "3" ]]; then
+	echo "[maven-deploy] Usage: srcFile groupName packageName"
+	exit 1
+fi
+
+srcFile="$1"
+groupName="$2"
+packageName="$3"
+
+fileExtension="${srcFile##*.}"
+docId="${groupName%%.*}"
+attachmentId="${packageName}/${version}/${packageName}-${version}.${fileExtension}"
+
+groupExtension="$(tr '.' '/' <<< "${groupName#*.}")"
+if [[ "$docId" != "$groupExtension" ]]; then
+	attachmentId="$groupExtension/$attachmentId"
+fi
+
+docUrl="$STAGING_URL/maven-repo/$docId"
+
+# try to create empty doc in case it doesn't exist
+echo "[maven-deploy] PUTting empty doc to $docUrl..."
+curl --silent -X PUT --data '{}' --header 'Content-Type: application/json' "$docUrl"
+
+echo "[maven-deploy] Fetching parent doc rev from $docUrl..."
+initialRev="$(curl --silent --head "$docUrl" | sed -En -e 's/^ETag: "(.*)"/\1/p' | tr -d '\r')"
+
+# upload the attachment
+attachmentUrl="$docUrl/$attachmentId?rev=$initialRev"
+echo "[maven-deploy] PUTting attachment to $attachmentUrl..."
+curl -X PUT "$attachmentUrl" --data-binary @"$srcFile"
+
+echo "[maven-deploy] $groupName:$packageName:$version uploaded."
