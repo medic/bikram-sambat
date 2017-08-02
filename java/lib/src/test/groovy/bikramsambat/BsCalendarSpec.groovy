@@ -54,6 +54,18 @@ class BsCalendarSpec extends Specification {
 	}
 
 	@Unroll
+	def 'daysInMonth() should throw BsException if date not within supported range'(testCase) {
+		when:
+			bs.daysInMonth(testCase.year, testCase.month)
+
+		then:
+			thrown(BsException)
+
+		where:
+			testCase << testJson('daysInMonth-unsupported')
+	}
+
+	@Unroll
 	def 'toGreg() for #testCase'(testCase) {
 		given:
 			def bsDate = new BikramSambatDate(testCase.bs[0], testCase.bs[1], testCase.bs[2])

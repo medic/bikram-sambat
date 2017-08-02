@@ -13,14 +13,7 @@ public final class BsDatePickerUtils {
 	private static final DevanagariDigitConverter convert = DevanagariDigitConverter.getInstance();
 
 	public static void asDevanagariNumberInput(Object parent, int id) {
-		final EditText e;
-		if(parent instanceof Activity) {
-			e = (EditText) ((Activity) parent).findViewById(id);
-		} else if(parent instanceof Dialog) {
-			e = (EditText) ((Dialog) parent).findViewById(id);
-		} else if(parent instanceof View) {
-			e = (EditText) ((View) parent).findViewById(id);
-		} else throw new IllegalArgumentException("No handling for parent of type: " + parent.getClass());
+		final EditText e = (EditText) findViewById(parent, id);
 
 		e.addTextChangedListener(new TextWatcher() {
 			public void afterTextChanged(Editable s) {}
@@ -36,6 +29,16 @@ public final class BsDatePickerUtils {
 				}
 			}
 		});
+	}
+
+	public static View findViewById(Object parent, int id) {
+		if(parent instanceof Activity) {
+			return ((Activity) parent).findViewById(id);
+		} else if(parent instanceof Dialog) {
+			return	((Dialog) parent).findViewById(id);
+		} else if(parent instanceof View) {
+			return ((View) parent).findViewById(id);
+		} else throw new IllegalArgumentException("No handling for parent of type: " + parent.getClass());
 	}
 
 }

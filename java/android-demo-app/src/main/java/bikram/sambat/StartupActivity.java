@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import bikramsambat.BikramSambatDate;
 import bikramsambat.BsCalendar;
+import bikramsambat.BsException;
 import bikramsambat.BsGregorianDate;
 import bikramsambat.DevanagariDigitConverter;
 import bikramsambat.android.BsDatePickerDialog;
@@ -22,6 +23,7 @@ import bikramsambat.android.BsDatePickerDialog;
 import java.util.LinkedList;
 
 import static android.content.DialogInterface.BUTTON_POSITIVE;
+import static bikram.sambat.BsLog.logException;
 import static bikram.sambat.BsLog.trace;
 import static bikramsambat.android.BsDatePickerUtils.asDevanagariNumberInput;
 
@@ -48,8 +50,13 @@ public class StartupActivity extends Activity {
 		String bikDate_euro = bsDate.day + "/" + bsDate.month + "/" + bsDate.year;
 		String bikDate_bik = convert.toDev(bikDate_euro);
 
-		BsGregorianDate gregDate = BsCalendar.getInstance().toGreg(bsDate);
-		String gregDate_str = gregDate.day + "/" + gregDate.month + "/" + gregDate.year;
+		String gregDate_str;
+		try {
+			BsGregorianDate gregDate = BsCalendar.getInstance().toGreg(bsDate);
+			gregDate_str = gregDate.day + "/" + gregDate.month + "/" + gregDate.year;
+		} catch(BsException ex) {
+			gregDate_str = "Could not calculate gregorian date: " + ex.getMessage();
+		}
 
 		content.add("GREGORIAN DATE:");
 		content.add("-- " + gregDate_str);
@@ -67,7 +74,12 @@ public class StartupActivity extends Activity {
 		d.setButton(BUTTON_POSITIVE, "Okeyzi", new OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				text(R.id.txtDialog_bik, (d.getDate_bs() + " BS"));
-				text(R.id.txtDialog_greg, (d.getDate_greg() + " AD"));
+				try {
+					text(R.id.txtDialog_greg, (d.getDate_greg() + " AD"));
+				} catch(BsException ex) {
+					logException(ex, "Could not calculate gregorian date.");
+					text(R.id.txtDialog_greg, "Could not calculate: " + ex.getMessage());
+				}
 			}
 		});
 		d.show();

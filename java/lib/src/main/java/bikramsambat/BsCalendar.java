@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import static bikramsambat.BsUtils.zPad;
+import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.MONTH;
@@ -43,12 +44,16 @@ public final class BsCalendar {
 	 *   month #5 <- this is the only month which has a day variation of more than 1
 	 *   & 3 <- this is a 2 bit mask, i.e. 0...011
 	 */
-	public int daysInMonth(int year, int month) {
-		return 29 + (int) ((ENCODED_MONTH_LENGTHS[year - 2000] >>>
-				(((month-1) << 1))) & 3);
+	public int daysInMonth(int year, int month) throws BsException {
+		try {
+			return 29 + (int) ((ENCODED_MONTH_LENGTHS[year - 2000] >>>
+					(((month-1) << 1))) & 3);
+		} catch(ArrayIndexOutOfBoundsException ex) {
+			throw new BsException(format("Unsupported year/month combination: %s/%s", year, month));
+		}
 	}
 
-	public BsGregorianDate toGreg(BikramSambatDate bik) {
+	public BsGregorianDate toGreg(BikramSambatDate bik) throws BsException {
 		int year = bik.year, month = bik.month, day = bik.day;
 
 		long timestamp = BS_EPOCH_TS;
