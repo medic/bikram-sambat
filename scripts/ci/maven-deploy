@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# TODO if TRAVIS_TAG not set, echo and exit
+
+# TODO extract extension of filename
+# TODO extract the base doc name
+# TODO extract/build the attachment name
+
+# TODO try to put empty doc in case it doesn't exist
+# TODO get initial rev for relevant doc
+# TODO POST the attachment
