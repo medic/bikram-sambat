@@ -8,11 +8,13 @@ ifdef ComSpec
   GRADLEW := $(subst /,\,${GRADLEW})
 endif
 
-.PHONY: default setup-js assemble-java test test-js test-java travis release-js release-bootstrap
+.PHONY: default setup-js assemble-java test test-js test-java travis release-js release-bootstrap java
 
 default: test assemble-java android
 
 test: test-js test-java
+
+java: test-java assemble-java
 
 setup-js:
 	cd js && npm install
