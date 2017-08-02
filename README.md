@@ -47,3 +47,10 @@ Java utilities for converting between the Nepali Bikram Sambat (Vikram Samvat) a
 
 	System.out.println(bs.toBik_text('2017-03-28'));
 	> १५ चैत २०७३
+
+
+# Android
+
+Re-usable Android widgets for date inputs using Bikram Sambat calendar.
+
+See usage examples in `java/android-demo-app`.
