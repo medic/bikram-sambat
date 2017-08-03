@@ -1,16 +1,17 @@
 #!/bin/bash
 
-# TODO if TRAVIS_TAG not set, echo and exit
-if [[ -z "$TRAVIS_TAG" ]] && ! [[ "$TRAVIS_BRANCH" = "master" ]]; then
-	echo "[maven-deploy] This build is not tagged.  Will not be uploaded to maven."
+if ! [[ "$TRAVIS_TAG" = java-* ]] && ! [[ "$TRAVIS_BRANCH" = "master" ]]; then
+	echo "[maven-deploy] This build is not tagged for java release.  Will not be uploaded to maven."
 	exit 1
 fi
 
 if [[ "$TRAVIS_BRANCH" = "master" ]]; then
 	version="SNAPSHOT"
 else
-	version="$TRAVIS_TAG"
+	version="${TRAVIS_TAG##*-}"
 fi
+
+echo "[maven-deploy] Version: ${version}"
 
 if [[ -z "$STAGING_URL" ]]; then
 	echo "[maven-deploy] Missing required env var: STAGING_URL"
