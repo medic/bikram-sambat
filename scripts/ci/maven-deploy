@@ -2,7 +2,7 @@
 
 # TODO if TRAVIS_TAG not set, echo and exit
 if [[ -z "$TRAVIS_TAG" ]] && ! [[ "$TRAVIS_BRANCH" = "master" ]]; then
-	echo "This build is not tagged.  Will not be uploaded to maven."
+	echo "[maven-deploy] This build is not tagged.  Will not be uploaded to maven."
 	exit 1
 fi
 
@@ -13,12 +13,12 @@ else
 fi
 
 if [[ -z "$STAGING_URL" ]]; then
-	echo "Missing required env var: STAGING_URL"
+	echo "[maven-deploy] Missing required env var: STAGING_URL"
 	exit 1
 fi
 
 if ! [[ "$#" = "3" ]]; then
-	echo "Usage: srcFile groupName packageName"
+	echo "[maven-deploy] Usage: srcFile groupName packageName"
 	exit 1
 fi
 
@@ -33,9 +33,9 @@ attachmentId="$(tr '.' '/' <<< "${groupName#*.}")/${packageName}/${version}/${pa
 docUrl="$STAGING_URL/maven-repo/$docId"
 
 # try to create empty doc in case it doesn't exist
-echo curl -X PUT --data '{}' --header 'Content-Type: application/json' "$docUrl"
+curl -X PUT --data '{}' --header 'Content-Type: application/json' "$docUrl"
 
 initialRev="$(curl --silent --head "$docUrl" | sed -En -e 's/^ETag: "(.*)"/\1/p')"
 
 # upload the attachment
-echo curl -X PUT "$docUrl/$attachmentId" --data-binary @"$srcFile"
+curl -X PUT "$docUrl/$attachmentId" --data-binary @"$srcFile"
