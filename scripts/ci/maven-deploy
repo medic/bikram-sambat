@@ -42,6 +42,7 @@ docUrl="$STAGING_URL/maven-repo/$docId"
 echo "[maven-deploy] PUTting empty doc to $docUrl..."
 curl --silent -X PUT --data '{}' --header 'Content-Type: application/json' "$docUrl"
 
+echo "[maven-deploy] Fetching parent doc rev..."
 initialRev="$(curl --silent --head "$docUrl" | sed -En -e 's/^ETag: "(.*)"/\1/p')"
 
 # upload the attachment
