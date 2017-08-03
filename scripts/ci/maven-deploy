@@ -1,11 +1,41 @@
 #!/bin/bash
 
 # TODO if TRAVIS_TAG not set, echo and exit
+if [[ -z "$TRAVIS_TAG" ]] && ! [[ "$TRAVIS_BRANCH" = "master" ]]; then
+	echo "This build is not tagged.  Will not be uploaded to maven."
+	exit 1
+fi
 
-# TODO extract extension of filename
-# TODO extract the base doc name
-# TODO extract/build the attachment name
+if [[ "$TRAVIS_BRANCH" = "master" ]]; then
+	version="SNAPSHOT"
+else
+	version="$TRAVIS_TAG"
+fi
 
-# TODO try to put empty doc in case it doesn't exist
-# TODO get initial rev for relevant doc
-# TODO POST the attachment
+if [[ -z "$STAGING_URL" ]]; then
+	echo "Missing required env var: STAGING_URL"
+	exit 1
+fi
+
+if ! [[ "$#" = "3" ]]; then
+	echo "Usage: srcFile groupName packageName"
+	exit 1
+fi
+
+srcFile="$1"
+groupName="$2"
+packageName="$3"
+
+fileExtension="${srcFile##*.}"
+docId="${groupName%%.*}"
+attachmentId="$(tr '.' '/' <<< "${groupName#*.}")/${packageName}/${version}/${packageName}-${version}.${fileExtension}"
+
+docUrl="$STAGING_URL/maven-repo/$docId"
+
+# try to create empty doc in case it doesn't exist
+echo curl -X PUT --data '{}' --header 'Content-Type: application/json' "$docUrl"
+
+initialRev="$(curl --silent --head "$docUrl" | sed -En -e 's/^ETag: "(.*)"/\1/p')"
+
+# upload the attachment
+echo curl -X PUT "$docUrl/$attachmentId" --data-binary @"$srcFile"
