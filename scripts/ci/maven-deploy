@@ -1,11 +1,11 @@
 #!/bin/bash -eu
 
-if ! [[ "$TRAVIS_TAG" = java-* ]] && ! [[ "$TRAVIS_BRANCH" = "master" ]]; then
+if ! [[ "${TRAVIS_TAG-}" = java-* ]] && ! [[ "${TRAVIS_BRANCH-}" = "master" ]]; then
 	echo "[maven-deploy] This build is not tagged for java release.  Will not be uploaded to maven."
 	exit 1
 fi
 
-if [[ "$TRAVIS_BRANCH" = "master" ]]; then
+if [[ "${TRAVIS_BRANCH-}" = "master" ]]; then
 	version="SNAPSHOT"
 else
 	version="${TRAVIS_TAG##*-}"
@@ -29,7 +29,12 @@ packageName="$3"
 
 fileExtension="${srcFile##*.}"
 docId="${groupName%%.*}"
-attachmentId="$(tr '.' '/' <<< "${groupName#*.}")/${packageName}/${version}/${packageName}-${version}.${fileExtension}"
+attachmentId="${packageName}/${version}/${packageName}-${version}.${fileExtension}"
+
+groupExtension="$(tr '.' '/' <<< "${groupName#*.}")"
+if [[ "$docId" != "$groupExtension" ]]; then
+	attachmentId="$groupExtension/$attachmentId"
+fi
 
 docUrl="$STAGING_URL/maven-repo/$docId"
 
