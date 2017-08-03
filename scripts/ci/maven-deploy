@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -eu
 
 if ! [[ "$TRAVIS_TAG" = java-* ]] && ! [[ "$TRAVIS_BRANCH" = "master" ]]; then
 	echo "[maven-deploy] This build is not tagged for java release.  Will not be uploaded to maven."
@@ -34,9 +34,14 @@ attachmentId="$(tr '.' '/' <<< "${groupName#*.}")/${packageName}/${version}/${pa
 docUrl="$STAGING_URL/maven-repo/$docId"
 
 # try to create empty doc in case it doesn't exist
-curl -X PUT --data '{}' --header 'Content-Type: application/json' "$docUrl"
+echo "[maven-deploy] PUTting empty doc to $docUrl..."
+curl --silent -X PUT --data '{}' --header 'Content-Type: application/json' "$docUrl"
 
 initialRev="$(curl --silent --head "$docUrl" | sed -En -e 's/^ETag: "(.*)"/\1/p')"
 
 # upload the attachment
-curl -X PUT "$docUrl/$attachmentId" --data-binary @"$srcFile"
+attachmentUrl="$docUrl/$attachmentId?rev=$initialRev"
+echo "[maven-deploy] PUTting attachment to $attachmentUrl..."
+curl -X PUT "$attachmentUrl" --data-binary @"$srcFile"
+
+echo "[maven-deploy] $groupName:$packageName:$version uploaded."
