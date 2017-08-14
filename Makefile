@@ -8,13 +8,17 @@ ifdef ComSpec
   GRADLEW := $(subst /,\,${GRADLEW})
 endif
 
-.PHONY: default setup-js assemble-java test test-js test-java travis release-js release-bootstrap java
+
+.PHONY: default test travis
 
 default: test assemble-java android
 
 test: test-js test-java
 
-java: test-java assemble-java
+travis: test
+
+
+.PHONY: setup-js test-js release-js
 
 setup-js:
 	cd js && npm install
@@ -27,6 +31,9 @@ release-js: setup-js test-js
 		../scripts/write-version-number js $$(git describe --abbrev=0 --tags) && \
 		npm publish
 
+
+.PHONY: setup-bootstrap release-bootstrap
+
 setup-bootstrap:
 	cd bootstrap && npm install
 
@@ -35,13 +42,16 @@ release-bootstrap: setup-bootstrap
 		../scripts/write-version-number bootstrap $$(git describe --abbrev=0 --tags) && \
 		npm publish
 
+
+.PHONY: java assemble-java test-java
+
+java: test-java assemble-java
+
 assemble-java:
 	cd java && ${GRADLEW} assemble
 
 test-java:
 	cd java && ${GRADLEW} test
-
-travis: test
 
 
 .PHONY: android android-logs android-uninstall
