@@ -41,6 +41,15 @@ function initListeners($parent) {
       $this.parents('.input-group').find('input[name=month]').val(1+$this.parent('li').index());
       $this.parents('.input-group-btn').find('.dropdown-toggle').html($this.text() + ' <span class="caret"></span>');
     });
+
+  $parent.find('input[name=month]')
+    .on('change', function() {
+      var $this = $(this);
+      $this.parents('.bikram-sambat-input-group')
+        .find('.dropdown-menu li a')
+        .eq(parseInt($this.val(), 10) - 1)
+        .click();
+    });
 }
 
 
@@ -53,7 +62,9 @@ function setText($parent, name, val) {
   $parent.find('[name='+name+']').val(to_dev(val));
 }
 function setDropdown($parent, name, val) {
-  $parent.find('[name='+name+']').val(val);
+  $parent.find('[name='+name+']')
+    .val(val)
+    .trigger('change');
 }
 
 
