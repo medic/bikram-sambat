@@ -52,10 +52,8 @@ var to_dev = eurodig.to_non_euro.devanagari;
 
 //> JQUERY SETUP
 
-function initListeners($parent) {
-  if(arguments.length === 0) {
-    $parent = $('body');
-  }
+function initListeners($parent, dateInputSelecter) {
+  if(arguments.length !== 2) throw new Error();
 
   $parent.find('.devanagari-number-input')
     // Because we change the content of the input field, we must be careful to
@@ -66,13 +64,21 @@ function initListeners($parent) {
       $this.val(to_dev($this.val()));
       this.selectionStart = this.selectionEnd = selectionStart;
     })
+    .on('change', function() {
+      var $this = $(this);
+      var $inputGroup = $this.parents('.bikram-sambat-input-group');
+      updateBackingDateInput($inputGroup, dateInputSelecter);
+    })
     ;
 
   $parent.find('.bikram-sambat-input-group .dropdown-menu li a')
     .on('click', function() {
       var $this = $(this);
-      $this.parents('.input-group').find('input[name=month]').val(1+$this.parent('li').index());
+      var $inputGroup = $this.parents('.bikram-sambat-input-group');
+      setVal($inputGroup, 'month', 1+$this.parent('li').index());
       $this.parents('.input-group-btn').find('.dropdown-toggle').html($this.text() + ' <span class="caret"></span>');
+
+      updateBackingDateInput($inputGroup, dateInputSelecter);
     });
 }
 
@@ -82,17 +88,20 @@ function initListeners($parent) {
 function fieldValue($parent, name) {
   return from_dev($parent.find('[name='+name+']').val());
 }
-function setText($parent, name, val) {
+function setVal($parent, name, val) {
   $parent.find('[name='+name+']').val(to_dev(val));
 }
 function setDropdown($parent, name, val) {
-  $parent.find('[name='+name+']')
-    .parents('.bikram-sambat-input-group')
+  var $input = $parent.find('[name='+name+']')
+  $input.parents('.bikram-sambat-input-group')
     .find('.dropdown-menu li a')
     .eq(val - 1)
     .click();
 }
-
+function updateBackingDateInput($inputGroup, dateInputSelecter) {
+  var greg = getDate_greg_text($inputGroup);
+  if(greg) $(dateInputSelecter).val(greg);
+}
 
 //> EXPORTED FUNCTIONS
 
@@ -107,24 +116,27 @@ module.exports = window.bikram_sambat_bootstrap = {
       return null;
     }
   },
-  getDate_greg_text: function($inputGroup) {
-    var year = fieldValue($inputGroup, 'year');
-    var month = fieldValue($inputGroup, 'month');
-    var day = fieldValue($inputGroup, 'day');
-    try {
-      return bs.toGreg_text(year, month, day);
-    } catch(e) {
-      return null;
-    }
-  },
-  setDate_greg_text: function($inputGroup, gregDateString) {
+  getDate_greg_text: getDate_greg_text,
+  setDate_greg_text: function($inputGroup, dateInputSelecter, gregDateString) {
     var bik = bs.toBik(gregDateString);
-    setText($inputGroup, 'year', bik.year);
+
+    setVal($inputGroup, 'year', bik.year);
+    setVal($inputGroup, 'day', bik.day);
     setDropdown($inputGroup, 'month', bik.month);
-    setText($inputGroup, 'day', bik.day);
   },
   initListeners: initListeners,
 };
+
+function getDate_greg_text($inputGroup) {
+  var year = fieldValue($inputGroup, 'year');
+  var month = fieldValue($inputGroup, 'month');
+  var day = fieldValue($inputGroup, 'day');
+  try {
+    return bs.toGreg_text(year, month, day);
+  } catch(e) {
+    return null;
+  }
+}
 
 },{"bikram-sambat":7,"eurodigit":1}],6:[function(require,module,exports){
 arguments[4][4][0].apply(exports,arguments)

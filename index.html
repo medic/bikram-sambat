@@ -84,7 +84,6 @@ console.log('Date set to:', bikram_sambat_bootstrap.getDate_greg($('.bikram-samb
                 </div>
 
                 <div class="form-group">
-                    <button id="update-gregorian" class="btn btn-primary" type="button">↓ Update from Bikram</button>
                     <button id="update-bikram-sambat" class="btn btn-primary" type="button">↑ Update from Gregorian</button>
                 </div>
 
@@ -98,18 +97,13 @@ console.log('Date set to:', bikram_sambat_bootstrap.getDate_greg($('.bikram-samb
 
         <script type="text/javascript" src="./bikram-sambat-bs.js"></script>
         <script>
-            bikram_sambat_bootstrap.initListeners();
-
-            $('#update-gregorian')
-                .on('click', function() {
-                    var gregString = bikram_sambat_bootstrap.getDate_greg_text($('.bikram-sambat-input-group'));
-                    $('input[name=gregorian]').val(gregString);
-                });
+            bikram_sambat_bootstrap.initListeners($('form'), 'input[name=gregorian]');
 
             $('#update-bikram-sambat')
                 .on('click', function() {
-                    var gregString = $('input[name=gregorian]').val();
-                    bikram_sambat_bootstrap.setDate_greg_text($('.bikram-sambat-input-group'), gregString);
+                    var dateInputSelecter = 'input[name=gregorian]';
+                    var gregString = $(dateInputSelecter).val();
+                    bikram_sambat_bootstrap.setDate_greg_text($('.bikram-sambat-input-group'), dateInputSelecter, gregString);
                 });
         </script>
 
