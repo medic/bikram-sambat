@@ -18,7 +18,7 @@ function initListeners($parent, dateInputSelecter) {
       $this.val(to_dev($this.val()));
       this.selectionStart = this.selectionEnd = selectionStart;
     })
-    .on('change', function() {
+    .on('change blur', function() {
       var $this = $(this);
       var $inputGroup = $this.parents('.bikram-sambat-input-group');
       updateBackingDateInput($inputGroup, dateInputSelecter);
