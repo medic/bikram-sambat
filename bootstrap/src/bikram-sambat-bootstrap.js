@@ -6,19 +6,6 @@ var to_dev = eurodig.to_non_euro.devanagari;
 
 //> JQUERY SETUP
 
-function addChangeListener($parent, onChange) {
-  if(arguments.length === 1) {
-    onChange = $parent;
-    $parent = $('body');
-  }
-
-  $parent.find('.devanagari-number-input')
-    .on('input', onChange);
-
-  $parent.find('.bikram-sambat-input-group .dropdown-menu li a')
-    .on('click', onChange);
-}
-
 function initListeners($parent) {
   if(arguments.length === 0) {
     $parent = $('body');
@@ -41,15 +28,6 @@ function initListeners($parent) {
       $this.parents('.input-group').find('input[name=month]').val(1+$this.parent('li').index());
       $this.parents('.input-group-btn').find('.dropdown-toggle').html($this.text() + ' <span class="caret"></span>');
     });
-
-  $parent.find('input[name=month]')
-    .on('change', function() {
-      var $this = $(this);
-      $this.parents('.bikram-sambat-input-group')
-        .find('.dropdown-menu li a')
-        .eq(parseInt($this.val(), 10) - 1)
-        .click();
-    });
 }
 
 
@@ -63,15 +41,16 @@ function setText($parent, name, val) {
 }
 function setDropdown($parent, name, val) {
   $parent.find('[name='+name+']')
-    .val(val)
-    .trigger('change');
+    .parents('.bikram-sambat-input-group')
+    .find('.dropdown-menu li a')
+    .eq(val - 1)
+    .click();
 }
 
 
 //> EXPORTED FUNCTIONS
 
 module.exports = window.bikram_sambat_bootstrap = {
-  addChangeListener: addChangeListener,
   getDate_greg: function($inputGroup) {
     var year = fieldValue($inputGroup, 'year');
     var month = fieldValue($inputGroup, 'month');
