@@ -6,42 +6,25 @@ var to_dev = eurodig.to_non_euro.devanagari;
 
 //> JQUERY SETUP
 
-function addChangeListener($parent, selecters, onChange) {
+function addChangeListener($parent, onChange) {
   if(arguments.length === 1) {
     onChange = $parent;
-    selecters = {};
     $parent = $('body');
-  } else if(arguments.length === 2) {
-    onChange = selecters;
-    if($parent instanceof jQuery) {
-      selecters = {};
-    } else {
-      selecters = $parent;
-      $parent = $('body');
-    }
   }
 
-  $parent.find(selecters.numberInput || '.devanagari-number-input')
+  $parent.find('.devanagari-number-input')
     .on('input', onChange);
 
-  $parent.find(selecters.monthToggle || '.bikram-sambat-input-group .dropdown-menu li a')
+  $parent.find('.bikram-sambat-input-group .dropdown-menu li a')
     .on('click', onChange);
 }
 
-function initListeners($parent, selecters) {
+function initListeners($parent) {
   if(arguments.length === 0) {
-    selecters = {};
     $parent = $('body');
-  } else if(arguments.length === 1) {
-    if($parent instanceof jQuery) {
-      selecters = {};
-    } else {
-      selecters = $parent;
-      $parent = $('body');
-    }
   }
 
-  $parent.find(selecters.numberInput || '.devanagari-number-input')
+  $parent.find('.devanagari-number-input')
     // Because we change the content of the input field, we must be careful to
     // preserve the caret position from before the change.
     .on('input', function() {
@@ -52,7 +35,7 @@ function initListeners($parent, selecters) {
     })
     ;
 
-  $parent.find(selecters.monthToggle || '.bikram-sambat-input-group .dropdown-menu li a')
+  $parent.find('.bikram-sambat-input-group .dropdown-menu li a')
     .on('click', function() {
       var $this = $(this);
       $this.parents('.input-group').find('input[name=month]').val(1+$this.parent('li').index());
