@@ -6,7 +6,7 @@
   "scripts": {
     "build": "browserify -e ./src/bikram-sambat-bootstrap.js -o dist/bikram-sambat-bs.js",
     "server": "http-server dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jshint src/*.js"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,8 @@
   "homepage": "https://github.com/medic/bikram-sambat#readme",
   "devDependencies": {
     "browserify": "^14.4.0",
-    "http-server": "^0.10.0"
+    "http-server": "^0.10.0",
+    "jshint": "^2.9.5"
   },
   "dependencies": {
     "bikram-sambat": "^1.4.0",

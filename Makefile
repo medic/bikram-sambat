@@ -13,7 +13,7 @@ endif
 
 default: test assemble-java android
 
-test: test-js test-java
+test: test-js test-bootstrap test-java
 
 travis: test
 
@@ -32,7 +32,10 @@ release-js: setup-js test-js
 		npm publish
 
 
-.PHONY: setup-bootstrap release-bootstrap
+.PHONY: setup-bootstrap test-bootstrap release-bootstrap
+
+test-bootstrap:
+	cd bootstrap && npm test
 
 setup-bootstrap:
 	cd bootstrap && npm install
