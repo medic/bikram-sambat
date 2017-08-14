@@ -54,7 +54,7 @@ function setDropdown($parent, name, val) {
 }
 function updateBackingDateInput($inputGroup, dateInputSelecter) {
   var greg = getDate_greg_text($inputGroup);
-  if(greg) $(dateInputSelecter).val(greg);
+  if(greg) $(dateInputSelecter).val(greg).trigger('change');
 }
 
 //> EXPORTED FUNCTIONS
