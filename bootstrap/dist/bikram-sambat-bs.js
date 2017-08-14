@@ -1,4 +1,161 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+"use strict";
+module.exports = {
+	to_euro: require('./to_euro'),
+	to_int: require('./to_int'),
+	to_non_euro: require('./to_non_euro')
+};
+
+},{"./to_euro":2,"./to_int":3,"./to_non_euro":4}],2:[function(require,module,exports){
+'use strict';
+
+function replacer(c) {
+	c = c.charCodeAt(0);
+	if(c < 1642) return c - 1632; // western arabic
+	if(c < 1786) return c - 1776; // perso-arabic
+	return c - 2406; // devanagari
+}
+
+module.exports = function(original) {
+	return original && original.toString().replace(/[٠-٩۰-۹०-९]/g, replacer);
+};
+
+},{}],3:[function(require,module,exports){
+var to_euro = require('./to_euro');
+
+module.exports = function(s) {
+	return Number.parseInt(to_euro(s));
+};
+
+},{"./to_euro":2}],4:[function(require,module,exports){
+'use strict';
+
+function from(base) {
+	function replacer(c) { return String.fromCharCode(Number(c) + base); }
+	return function(original) {
+		return original && original.toString().replace(/[0-9]/g, replacer);
+	};
+}
+
+module.exports = {
+	devanagari: from(2406),
+	eastern_arabic: from(1632),
+	perso_arabic: from(1776)
+};
+
+},{}],5:[function(require,module,exports){
+var bs = require('bikram-sambat');
+var eurodig = require('eurodigit');
+var from_dev = eurodig.to_int;
+var to_dev = eurodig.to_non_euro.devanagari;
+
+
+//> JQUERY SETUP
+
+function addChangeListener($parent, selecters, onChange) {
+  if(arguments.length === 1) {
+    onChange = $parent;
+    selecters = {};
+    $parent = $('body');
+  } else if(arguments.length === 2) {
+    onChange = selecters;
+    if($parent instanceof jQuery) {
+      selecters = {};
+    } else {
+      selecters = $parent;
+      $parent = $('body');
+    }
+  }
+
+  $parent.find(selecters.numberInput || '.devanagari-number-input')
+    .on('input', onChange);
+
+  $parent.find(selecters.monthToggle || '.bikram-sambat-input-group .dropdown-menu li a')
+    .on('click', onChange);
+}
+
+function initListeners($parent, selecters) {
+  if(arguments.length === 0) {
+    selecters = {};
+    $parent = $('body');
+  } else if(arguments.length === 1) {
+    if($parent instanceof jQuery) {
+      selecters = {};
+    } else {
+      selecters = $parent;
+      $parent = $('body');
+    }
+  }
+
+  $parent.find(selecters.numberInput || '.devanagari-number-input')
+    // Because we change the content of the input field, we must be careful to
+    // preserve the caret position from before the change.
+    .on('input', function() {
+      var $this = $(this);
+      var selectionStart = this.selectionStart;
+      $this.val(to_dev($this.val()));
+      this.selectionStart = this.selectionEnd = selectionStart;
+    })
+    ;
+
+  $parent.find(selecters.monthToggle || '.bikram-sambat-input-group .dropdown-menu li a')
+    .on('click', function() {
+      var $this = $(this);
+      $this.parents('.input-group').find('input[name=month]').val(1+$this.parent('li').index());
+      $this.parents('.input-group-btn').find('.dropdown-toggle').html($this.text() + ' <span class="caret"></span>');
+    });
+}
+
+
+//> HELPER FUNCTIONS
+
+function fieldValue($parent, name) {
+  return from_dev($parent.find('[name='+name+']').val());
+}
+function setText($parent, name, val) {
+  $parent.find('[name='+name+']').val(to_dev(val));
+}
+function setDropdown($parent, name, val) {
+  $parent.find('[name='+name+']').val(val);
+}
+
+
+//> EXPORTED FUNCTIONS
+
+module.exports = window.bikram_sambat_bootstrap = {
+  addChangeListener: addChangeListener,
+  getDate_greg: function($inputGroup) {
+    var year = fieldValue($inputGroup, 'year');
+    var month = fieldValue($inputGroup, 'month');
+    var day = fieldValue($inputGroup, 'day');
+    try {
+      return bs.toGreg(year, month, day);
+    } catch(e) {
+      return null;
+    }
+  },
+  getDate_greg_text: function($inputGroup) {
+    var year = fieldValue($inputGroup, 'year');
+    var month = fieldValue($inputGroup, 'month');
+    var day = fieldValue($inputGroup, 'day');
+    try {
+      return bs.toGreg_text(year, month, day);
+    } catch(e) {
+      return null;
+    }
+  },
+  setDate_greg_text: function($inputGroup, gregDateString) {
+    var bik = bs.toBik(gregDateString);
+    setText($inputGroup, 'year', bik.year);
+    setDropdown($inputGroup, 'month', bik.month);
+    setText($inputGroup, 'day', bik.day);
+  },
+  initListeners: initListeners,
+};
+
+},{"bikram-sambat":7,"eurodigit":1}],6:[function(require,module,exports){
+arguments[4][4][0].apply(exports,arguments)
+},{"dup":4}],7:[function(require,module,exports){
 var toDevanagari = require('eurodigit/src/to_non_euro').devanagari;
 
 var MS_PER_DAY = 86400000;
@@ -18,12 +175,16 @@ var ENCODED_MONTH_LENGTHS = [
 
 /**
  * Magic numbers:
- *   2000 <- the first year encoded in ENCODED_MONTH_LENGTHS
+ *   2000 <- the first year (BS) encoded in ENCODED_MONTH_LENGTHS
  *   month #5 <- this is the only month which has a day variation of more than 1
  *   & 3 <- this is a 2 bit mask, i.e. 0...011
  */
 function daysInMonth(year, month) {
-  return 29 + ((ENCODED_MONTH_LENGTHS[year - 2000] >>>
+  // TODO why does this accept 0?
+  if(month < 0 || month > 12) throw new Error('Invalid month value ' + month);
+  var delta = ENCODED_MONTH_LENGTHS[year - 2000];
+  if(typeof delta === 'undefined') throw new Error('No data for year: ' + year + ' BS');
+  return 29 + ((delta >>>
       (((month-1) << 1))) & 3);
 }
 
@@ -61,19 +222,20 @@ function toBik_text(greg) {
 }
 
 function toGreg(year, month, day) {
+  // TODO month bounds-checking should be handled in daysInMonth()
+  if(month < 1) throw new Error('Invalid month value ' + month);
+  if(year < BS_YEAR_ZERO) throw new Error('Invalid year value ' + year);
+  if(day < 1 || day > daysInMonth(year, month)) throw new Error('Invalid day value', day);
+
   var timestamp = BS_EPOCH_TS;
   while(year >= BS_YEAR_ZERO) {
     while(month >= 1) {
-      while(day >= 1) {
+      while(--day >= 0) {
         timestamp += MS_PER_DAY;
-        --day;
       }
-      --month;
-      day = daysInMonth(year, month, day);
+      day = daysInMonth(year, --month);
     }
-    --year;
-    month = 12;
-    day = daysInMonth(year, month, day);
+    day = daysInMonth(--year, month = 12);
   }
 
   var d = new Date(timestamp);
@@ -84,119 +246,19 @@ function toGreg(year, month, day) {
   };
 }
 
+function toGreg_text(year, month, day) {
+  var d = toGreg(year, month, day);
+  return d.year + '-' + zPad(d.month) + '-' + zPad(d.day);
+}
+
 module.exports = {
   daysInMonth: daysInMonth,
+  toBik: toBik,
   toBik_dev: toBik_dev,
   toBik_euro: toBik_euro,
   toBik_text: toBik_text,
-  toGreg: toGreg
+  toGreg: toGreg,
+  toGreg_text: toGreg_text
 };
 
-},{"eurodigit/src/to_non_euro":5}],2:[function(require,module,exports){
-"use strict";
-module.exports = {
-	to_euro: require('./to_euro'),
-	to_int: require('./to_int'),
-	to_non_euro: require('./to_non_euro')
-};
-
-},{"./to_euro":3,"./to_int":4,"./to_non_euro":5}],3:[function(require,module,exports){
-'use strict';
-
-function replacer(c) {
-	c = c.charCodeAt(0);
-	if(c < 1642) return c - 1632; // western arabic
-	if(c < 1786) return c - 1776; // perso-arabic
-	return c - 2406; // devanagari
-}
-
-module.exports = function(original) {
-	return original && original.toString().replace(/[٠-٩۰-۹०-९]/g, replacer);
-};
-
-},{}],4:[function(require,module,exports){
-var to_euro = require('./to_euro');
-
-module.exports = function(s) {
-	return Number.parseInt(to_euro(s));
-};
-
-},{"./to_euro":3}],5:[function(require,module,exports){
-'use strict';
-
-function from(base) {
-	function replacer(c) { return String.fromCharCode(Number(c) + base); }
-	return function(original) {
-		return original && original.toString().replace(/[0-9]/g, replacer);
-	};
-}
-
-module.exports = {
-	devanagari: from(2406),
-	eastern_arabic: from(1632),
-	perso_arabic: from(1776)
-};
-
-},{}],6:[function(require,module,exports){
-var bs = require('bikram-sambat');
-var eurodig = require('eurodigit');
-var from_dev = eurodig.to_int;
-var to_dev = eurodig.to_non_euro.devanagari;
-
-
-//> JQUERY SETUP
-
-function initListeners($parent, selecters) {
-  if(arguments.length === 0) {
-    selecters = {};
-    $parent = $('body');
-  } else if(arguments.length === 1) {
-    if($parent instanceof jQuery) {
-      selecters = {};
-    } else {
-      selecters = $parent;
-      $parent = $('body');
-    }
-  }
-
-  $parent.find(selecters.numberInput || '.devanagari-number-input')
-    // Because we change the content of the input field, we must be careful to
-    // preserve the caret position from before the change.
-    .on('input', function() {
-      var $this = $(this);
-      var selectionStart = this.selectionStart;
-      $this.val(to_dev($this.val()));
-      this.selectionStart = this.selectionEnd = selectionStart;
-    })
-    ;
-
-  $parent.find(selecters.monthToggle || '.bikram-sambat-input-group .dropdown-menu li a')
-    .on('click', function() {
-      var $this = $(this);
-      $this.parents('.input-group').find('input[name=month]').val(1+$this.parent('li').index());
-      $this.parents('.input-group-btn').find('.dropdown-toggle').html($this.text() + ' <span class="caret"></span>');
-    });
-}
-
-
-//> HELPER FUNCTIONS
-
-function fieldValue($parent, selecter) {
-  return from_dev($parent.find(selecter).val());
-}
-
-
-//> EXPORTED FUNCTIONS
-
-module.exports = window.bikram_sambat_bootstrap = {
-  getDate: function($inputGroup) {
-    // TODO handle fields not set, out of bounds etc.
-    var year = fieldValue($inputGroup, '[name=year]');
-    var month = fieldValue($inputGroup, '[name=month]');
-    var day = fieldValue($inputGroup, '[name=day]');
-    return bs.toGreg(year, month, day);
-  },
-  initListeners: initListeners,
-};
-
-},{"bikram-sambat":1,"eurodigit":2}]},{},[6]);
+},{"eurodigit/src/to_non_euro":6}]},{},[5]);

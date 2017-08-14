@@ -95,6 +95,7 @@ function toGreg_text(year, month, day) {
 
 module.exports = {
   daysInMonth: daysInMonth,
+  toBik: toBik,
   toBik_dev: toBik_dev,
   toBik_euro: toBik_euro,
   toBik_text: toBik_text,

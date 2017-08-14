@@ -63,8 +63,14 @@ function initListeners($parent, selecters) {
 
 //> HELPER FUNCTIONS
 
-function fieldValue($parent, selecter) {
-  return from_dev($parent.find(selecter).val());
+function fieldValue($parent, name) {
+  return from_dev($parent.find('[name='+name+']').val());
+}
+function setText($parent, name, val) {
+  $parent.find('[name='+name+']').val(to_dev(val));
+}
+function setDropdown($parent, name, val) {
+  $parent.find('[name='+name+']').val(val);
 }
 
 
@@ -72,25 +78,31 @@ function fieldValue($parent, selecter) {
 
 module.exports = window.bikram_sambat_bootstrap = {
   addChangeListener: addChangeListener,
-  getDate: function($inputGroup) {
-    var year = fieldValue($inputGroup, '[name=year]');
-    var month = fieldValue($inputGroup, '[name=month]');
-    var day = fieldValue($inputGroup, '[name=day]');
+  getDate_greg: function($inputGroup) {
+    var year = fieldValue($inputGroup, 'year');
+    var month = fieldValue($inputGroup, 'month');
+    var day = fieldValue($inputGroup, 'day');
     try {
       return bs.toGreg(year, month, day);
     } catch(e) {
       return null;
     }
   },
-  getDate_text: function($inputGroup) {
-    var year = fieldValue($inputGroup, '[name=year]');
-    var month = fieldValue($inputGroup, '[name=month]');
-    var day = fieldValue($inputGroup, '[name=day]');
+  getDate_greg_text: function($inputGroup) {
+    var year = fieldValue($inputGroup, 'year');
+    var month = fieldValue($inputGroup, 'month');
+    var day = fieldValue($inputGroup, 'day');
     try {
       return bs.toGreg_text(year, month, day);
     } catch(e) {
       return null;
     }
+  },
+  setDate_greg_text: function($inputGroup, gregDateString) {
+    var bik = bs.toBik(gregDateString);
+    setText($inputGroup, 'year', bik.year);
+    setDropdown($inputGroup, 'month', bik.month);
+    setText($inputGroup, 'day', bik.day);
   },
   initListeners: initListeners,
 };
