@@ -29,11 +29,11 @@ Javascript and Java utilities for converting between the Nepali Bikram Sambat (V
 
 Java utilities for converting between the Nepali Bikram Sambat (Vikram Samvat) and Gregorian (standard European) calendars.
 
-# Installation
+## Installation
 
 	// TODO include gradle config here
 
-# Usage
+## Usage
 
 	BsCalendar bs = BsCalendar.getInstance();
 
