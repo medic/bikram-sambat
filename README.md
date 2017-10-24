@@ -54,3 +54,12 @@ Java utilities for converting between the Nepali Bikram Sambat (Vikram Samvat) a
 Re-usable Android widgets for date inputs using Bikram Sambat calendar.
 
 See usage examples in `java/android-demo-app`.
+
+
+# Bootstrap
+
+twitter-bootstrap widget [available from `npm`](https://www.npmjs.com/package/bikram-sambat-bootstrap):
+
+	require('bikram-sambat-bootstrap');
+
+For usage example, see `bootstrap/dist`.
