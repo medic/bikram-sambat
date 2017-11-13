@@ -22,8 +22,7 @@ var ENCODED_MONTH_LENGTHS = [
  *   & 3 <- this is a 2 bit mask, i.e. 0...011
  */
 function daysInMonth(year, month) {
-  // TODO why does this accept 0?
-  if(month < 0 || month > 12) throw new Error('Invalid month value ' + month);
+  if(month < 1 || month > 12) throw new Error('Invalid month value ' + month);
   var delta = ENCODED_MONTH_LENGTHS[year - 2000];
   if(typeof delta === 'undefined') throw new Error('No data for year: ' + year + ' BS');
   return 29 + ((delta >>>
@@ -70,11 +69,10 @@ function toGreg(year, month, day) {
   if(day < 1 || day > daysInMonth(year, month)) throw new Error('Invalid day value', day);
 
   var timestamp = BS_EPOCH_TS;
+
   while(year >= BS_YEAR_ZERO) {
-    while(month--) {
-      while(day--) timestamp += MS_PER_DAY;
-      day = daysInMonth(year, month);
-    }
+    do while(day--) timestamp += MS_PER_DAY;
+    while(--month && (day = daysInMonth(year, month)));
     day = daysInMonth(--year, month = 12);
   }
 

@@ -45,6 +45,7 @@ public final class BsCalendar {
 	 *   & 3 <- this is a 2 bit mask, i.e. 0...011
 	 */
 	public int daysInMonth(int year, int month) throws BsException {
+		if(month < 1 || month > 12) throw new BsException(format("Month does not exist: %s", month));
 		try {
 			return 29 + (int) ((ENCODED_MONTH_LENGTHS[year - 2000] >>>
 					(((month-1) << 1))) & 3);
@@ -62,7 +63,8 @@ public final class BsCalendar {
 				while(--day >= 0) {
 					timestamp += MS_PER_DAY;
 				}
-				day = daysInMonth(year, --month);
+				if(--month == 0) break;
+				day = daysInMonth(year, month);
 			}
 			day = daysInMonth(--year, month = 12);
 		}
