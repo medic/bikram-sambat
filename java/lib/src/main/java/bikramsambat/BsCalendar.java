@@ -40,18 +40,21 @@ public final class BsCalendar {
 
 	/**
 	 * Magic numbers:
-	 *   2000 <- the first year encoded in ENCODED_MONTH_LENGTHS
-	 *   month #5 <- this is the only month which has a day variation of more than 1
 	 *   & 3 <- this is a 2 bit mask, i.e. 0...011
 	 */
 	public int daysInMonth(int year, int month) throws BsException {
 		if(month < 1 || month > 12) throw new BsException(format("Month does not exist: %s", month));
-		try {
-			return 29 + (int) ((ENCODED_MONTH_LENGTHS[year - 2000] >>>
-					(((month-1) << 1))) & 3);
-		} catch(ArrayIndexOutOfBoundsException ex) {
-			throw new BsException(format("Unsupported year/month combination: %s/%s", year, month));
-		}
+		return 29 + (int) ((getDeltas(year) >>> (((month-1) << 1))) & 3);
+	}
+
+	public int daysInYear(int year) throws BsException {
+		int days = 348;
+		long deltas = getDeltas(year);
+
+		do days += deltas & 3;
+		while((deltas >>>= 2) != 0);
+
+		return days;
 	}
 
 	public BsGregorianDate toGreg(BikramSambatDate bik) throws BsException {
@@ -94,6 +97,18 @@ public final class BsCalendar {
 
 	public BikramSambatDate toBik(int year, int month, int day) throws BsException {
 		return toBik(year + "-" + zPad(month) + "-" + zPad(day));
+	}
+
+	/**
+	 * Magic numbers:
+	 *   2000 <- the first year encoded in ENCODED_MONTH_LENGTHS
+	 */
+	private long getDeltas(int year) throws BsException {
+		try {
+			return ENCODED_MONTH_LENGTHS[year - 2000];
+		} catch(ArrayIndexOutOfBoundsException ex) {
+			throw new BsException(format("Unsupported year: %s", year));
+		}
 	}
 
 	/**

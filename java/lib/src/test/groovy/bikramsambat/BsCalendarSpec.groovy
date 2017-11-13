@@ -66,6 +66,19 @@ class BsCalendarSpec extends Specification {
 	}
 
 	@Unroll
+	def 'daysInYear() for #testCase'(testCase) {
+		given:
+			def year = Integer.parseInt(testCase.key)
+			def expectedDays = testCase.value
+
+		expect:
+			bs.daysInYear(year) == expectedDays
+
+		where:
+			testCase << testJson('daysInYear')
+	}
+
+	@Unroll
 	def 'toGreg() for #testCase'(testCase) {
 		given:
 			def bsDate = new BikramSambatDate(testCase.bs[0], testCase.bs[1], testCase.bs[2])

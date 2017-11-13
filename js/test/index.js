@@ -174,4 +174,22 @@ describe('bikram-sambat', function() {
     });
 
   });
+
+  describe('#daysInYear()', () => {
+
+    _.forIn(test_data_for('daysInYear'), (expected, year) => {
+
+      describe(year + ' BS', function() {
+
+        it('should have ' + expected + ' days', () => {
+          // expect
+          assert.equal(bs.daysInYear(year), expected);
+        });
+
+      });
+
+    });
+
+  });
+
 });

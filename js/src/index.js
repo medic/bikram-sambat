@@ -15,18 +15,33 @@ var ENCODED_MONTH_LENGTHS = [
     ],
     MONTH_NAMES = ['बैशाख', 'जेठ', 'असार', 'साउन', 'भदौ', 'असोज', 'कार्तिक', 'मंसिर', 'पौष', 'माघ', 'फाल्गुन', 'चैत'];
 
-/**
+/*
  * Magic numbers:
  *   2000 <- the first year (BS) encoded in ENCODED_MONTH_LENGTHS
- *   month #5 <- this is the only month which has a day variation of more than 1
+ */
+function getDeltas(year) {
+  var deltas = ENCODED_MONTH_LENGTHS[year - 2000];
+  if(typeof deltas === 'undefined') throw new Error('No data for year: ' + year + ' BS');
+  return deltas;
+}
+
+/**
+ * Magic numbers:
  *   & 3 <- this is a 2 bit mask, i.e. 0...011
  */
 function daysInMonth(year, month) {
   if(month < 1 || month > 12) throw new Error('Invalid month value ' + month);
-  var delta = ENCODED_MONTH_LENGTHS[year - 2000];
-  if(typeof delta === 'undefined') throw new Error('No data for year: ' + year + ' BS');
-  return 29 + ((delta >>>
+  return 29 + ((getDeltas(year) >>>
       (((month-1) << 1))) & 3);
+}
+
+function daysInYear(year) {
+  var days = 348, deltas = getDeltas(year);
+
+  do days += deltas & 3;
+  while(deltas >>>= 2);
+
+  return days;
 }
 
 function zPad(x) { return x > 9 ? x : '0' + x; }
@@ -91,6 +106,7 @@ function toGreg_text(year, month, day) {
 
 module.exports = {
   daysInMonth: daysInMonth,
+  daysInYear: daysInYear,
   toBik: toBik,
   toBik_dev: toBik_dev,
   toBik_euro: toBik_euro,
