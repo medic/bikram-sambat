@@ -46,7 +46,7 @@ function setVal($parent, name, val) {
   $parent.find('[name='+name+']').val(to_dev(val));
 }
 function setDropdown($parent, name, val) {
-  var $input = $parent.find('[name='+name+']')
+  var $input = $parent.find('[name='+name+']');
   $input.parents('.bikram-sambat-input-group')
     .find('.dropdown-menu li a')
     .eq(val - 1)
