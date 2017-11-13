@@ -70,7 +70,6 @@ public final class BsCalendar {
 		}
 
 		Calendar c = Calendar.getInstance(GMT);
-System.out.println(bik + " -> " + timestamp);
 		c.setTimeInMillis(timestamp);
 		return new BsGregorianDate(c.get(YEAR), 1+c.get(MONTH), c.get(DAY_OF_MONTH));
 	}
