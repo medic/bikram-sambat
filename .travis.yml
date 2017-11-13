@@ -30,6 +30,7 @@ cache:
 before_script:
   - nvm install node && nvm use node
   - (cd js && npm install)
+  - (cd bootstrap && npm install)
 
 after_success:
   - scripts/ci/maven-deploy java/lib/build/libs/bikram-sambat.jar                      bikramsambat bikram-sambat
