@@ -20,7 +20,7 @@
     "calendar"
   ],
   "author": "alxndrsn",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/alxndrsn/bikram-sambat.js/issues"
   },
