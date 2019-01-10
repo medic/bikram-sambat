@@ -1,0 +1,17 @@
+{
+  "name": "integration-tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "update-java-lib": "cd ../java/lib && ../gradlew jar && cp build/libs/bikram-sambat.jar ../../integration-tests/bikram-sambat-generated.jar",
+    "compile-java-wrapper": "javac -classpath bikram-sambat-generated.jar JavaImplementationWrapper.java",
+    "test": "npm run update-java-lib && npm run compile-java-wrapper && echo Running tests... && mocha --reporter progress tests.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0"
+  }
+}

@@ -3,9 +3,10 @@ buildscript {
 		mavenCentral()
 		maven { url "https://jitpack.io" }
 		jcenter()
+		google()
 	}
 	dependencies {
-		classpath 'com.android.tools.build:gradle:2.1.0'
+		classpath 'com.android.tools.build:gradle:3.2.0'
 	}
 }
 apply plugin: 'com.android.application'
@@ -30,7 +31,6 @@ dependencies {
 
 android {
 	compileSdkVersion 23
-	buildToolsVersion '26.0.1'
 
 	packagingOptions {
 		exclude 'META-INF/LICENSE'

@@ -9,13 +9,16 @@ ifdef ComSpec
 endif
 
 
-.PHONY: default test travis
+.PHONY: default test travis test-integration
 
 default: test assemble-java android
 
 test: test-js test-bootstrap test-java
 
 travis: test
+
+test-integration:
+	cd integration-tests && npm install && npm test
 
 
 .PHONY: setup-js test-js release-js

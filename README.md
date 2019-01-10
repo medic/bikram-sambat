@@ -63,3 +63,13 @@ twitter-bootstrap widget [available from `npm`](https://www.npmjs.com/package/bi
 	require('bikram-sambat-bootstrap');
 
 For usage example, see `bootstrap/dist`.
+
+# Testing
+
+To run the fast test suite
+
+	make test
+
+To run the integration test suite, comparing Java and Javascript implementations
+
+	make test-integration
