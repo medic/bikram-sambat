@@ -4,6 +4,10 @@ dependencies {
 	compile project(':lib')
 }
 
+repositories {
+	google()
+}
+
 android {
 	compileSdkVersion 23
 
