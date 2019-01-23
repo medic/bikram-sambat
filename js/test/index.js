@@ -74,7 +74,7 @@ describe('bikram-sambat', function() {
     it('should throw Error if year is too small', () => {
 
       assert.throw(() =>
-        bs.toGreg(2006, 1, 1));
+        bs.toGreg(1969, 1, 1));
 
     });
 

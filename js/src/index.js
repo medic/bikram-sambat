@@ -1,29 +1,29 @@
 var toDevanagari = require('eurodigit/src/to_non_euro').devanagari;
-
 var MS_PER_DAY = 86400000;
+var MONTH_NAMES = ['बैशाख', 'जेठ', 'असार', 'साउन', 'भदौ', 'असोज', 'कार्तिक', 'मंसिर', 'पौष', 'माघ', 'फाल्गुन', 'चैत'];
 
-// We have defined our own Epoch for Bikram Sambat: 1-1-2007 BS / 13-4-1950 AD
-var BS_EPOCH_TS = -622359900000; // = Date.parse('1950-4-13')
-var BS_YEAR_ZERO = 2007;
+// ------ TO UPDATE THESE HARDCODED VALUES USE /scripts/encode-days-in-month.js
+// We have defined our own Epoch for Bikram Sambat: 1970-1-1 BS or 1913-4-13 AD
+var BS_EPOCH_TS = -1789990200000; // = Date.parse('1913-4-13')
+var BS_YEAR_ZERO = 1970;
+var ENCODED_MONTH_LENGTHS = [
+  5315258,5314490,9459438,8673005,5315258,5315066,9459438,8673005,5315258,5314298,9459438,5327594,5315258,5314298,9459438,5327594,5315258,5314286,9459438,5315306,5315258,5314286,8673006,5315306,5315258,5265134,8673006,5315258,5315258,9459438,8673005,5315258,5314298,9459438,8673005,5315258,5314298,9459438,8473322,5315258,5314298,9459438,5327594,5315258,5314298,9459438,5327594,5315258,5314286,8673006,5315306,5315258,5265134,8673006,5315306,5315258,9459438,8673005,5315258,5314490,9459438,8673005,5315258,5314298,9459438,8473325,5315258,5314298,9459438,5327594,5315258,5314298,9459438,5327594,5315258,5314286,9459438,5315306,5315258,5265134,8673006,5315306,5315258,5265134,8673006,5315258,5314490,9459438,8673005,5315258,5314298,9459438,8669933,5315258,5314298,9459438,8473322,5315258,5314298,9459438,5327594,5315258,5314286,9459438,5315306,5315258,5265134,8673006,5315306,5315258,5265134,5527290,5527277,5527226,5527226,5528046,5527277,5528250,5528057,5527277,5527277
+];
 
-// TODO this would be stored more efficiently converted to a string using
+// TODO ENCODED_MONTH_LENGTHS would be stored more efficiently converted to a string using
 // String.fromCharCode.apply(String, ENCODED_MONTH_LENGTHS), and extracted using
 // ENC_MTH.charCodeAt(...).  However, JS seems to do something weird with the
 // top bits.
-var ENCODED_MONTH_LENGTHS = [
-      8673005,5315258,5314298,9459438,8673005,5315258,5314298,9459438,8473322,5315258,5314298,9459438,5327594,5315258,5314298,9459438,5327594,5315258,5314286,8673006,5315306,5315258,5265134,8673006,5315306,5315258,9459438,8673005,5315258,5314490,9459438,8673005,5315258,5314298,9459438,8473325,5315258,5314298,9459438,5327594,5315258,5314298,9459438,5327594,5315258,5314286,9459438,5315306,5315258,5265134,8673006,5315306,5315258,5265134,8673006,5315258,5314490,9459438,8673005,5315258,5314298,9459438,8669933,5315258,5314298,9459438,8473322,5315258,5314298,9459438,5327594,5315258,5314286,9459438,5315306,5315258,5265134,8673006,5315306,5315258,5265134,5527290,5527277,5527226,5527226,5528046,5527277,5528250,5528057,5527277,5527277
-    ],
-    MONTH_NAMES = ['बैशाख', 'जेठ', 'असार', 'साउन', 'भदौ', 'असोज', 'कार्तिक', 'मंसिर', 'पौष', 'माघ', 'फाल्गुन', 'चैत'];
 
 /**
  * Magic numbers:
- *   2000 <- the first year (BS) encoded in ENCODED_MONTH_LENGTHS
+ *   BS_YEAR_ZERO <- the first year (BS) encoded in ENCODED_MONTH_LENGTHS
  *   month #5 <- this is the only month which has a day variation of more than 1
  *   & 3 <- this is a 2 bit mask, i.e. 0...011
  */
 function daysInMonth(year, month) {
   if(month < 1 || month > 12) throw new Error('Invalid month value ' + month);
-  var delta = ENCODED_MONTH_LENGTHS[year - 2000];
+  var delta = ENCODED_MONTH_LENGTHS[year - BS_YEAR_ZERO];
   if(typeof delta === 'undefined') throw new Error('No data for year: ' + year + ' BS');
   return 29 + ((delta >>>
       (((month-1) << 1))) & 3);
@@ -68,12 +68,16 @@ function toGreg(year, month, day) {
   if(year < BS_YEAR_ZERO) throw new Error('Invalid year value ' + year);
   if(day < 1 || day > daysInMonth(year, month)) throw new Error('Invalid day value', day);
 
-  var timestamp = BS_EPOCH_TS;
+  var timestamp = BS_EPOCH_TS + (MS_PER_DAY * day);
+  month--;
 
-  while(year >= BS_YEAR_ZERO) {
-    do while(day--) timestamp += MS_PER_DAY;
-    while(--month && (day = daysInMonth(year, month)));
-    day = daysInMonth(--year, month = 12);
+  while (year >= BS_YEAR_ZERO) {
+    while (month > 0) {
+      timestamp += (MS_PER_DAY * daysInMonth(year, month));
+      month--;
+    }
+    month = 12;
+    year--;
   }
 
   var d = new Date(timestamp);

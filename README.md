@@ -63,3 +63,19 @@ twitter-bootstrap widget [available from `npm`](https://www.npmjs.com/package/bi
 	require('bikram-sambat-bootstrap');
 
 For usage example, see `bootstrap/dist`.
+
+# Development
+
+## Run tests
+
+1. Install android sdk
+2. Execute `make test`
+
+## Update compressed days in month data
+
+1. Update `/test-data/daysInMonth.json` as required
+2. The first entry in `/test-data/daysInMonth.json` as the BS Epoch. Take this
+    and convert it to AD and update the bsEpoch constant below.
+3. Run the script: node ./scripts/encode-days-in-month.js
+4. Copy the output code into the files overwriting the existing hardcoded values
+

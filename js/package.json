@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/alxndrsn/bikram-sambat.js.git"
+    "url": "git+ssh://git@github.com/medic/bikram-sambat.git"
   },
   "keywords": [
     "bikram",
@@ -22,9 +22,9 @@
   "author": "alxndrsn",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/alxndrsn/bikram-sambat.js/issues"
+    "url": "https://github.com/medic/bikram-sambat/issues"
   },
-  "homepage": "https://github.com/alxndrsn/bikram-sambat.js#readme",
+  "homepage": "https://github.com/medic/bikram-sambat#readme",
   "devDependencies": {
     "chai": "^3.5.0",
     "grunt": "^1.0.1",

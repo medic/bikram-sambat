@@ -16,19 +16,17 @@ import static java.util.Collections.unmodifiableList;
 
 public final class BsCalendar {
 
-	// We have defined our own Epoch for Bikram Sambat:
-	//   1-1-2007 BS / 13-4-1950 AD
-	private static final long MS_PER_DAY = 86400000L;
-	private static final long BS_EPOCH_TS = -622359900000L; // 1950-4-13 AD
-	private static final long BS_YEAR_ZERO = 2007L;
+	// ------ TO UPDATE THESE HARDCODED VALUES USE /scripts/encode-days-in-month.js
+	// We have defined our own Epoch for Bikram Sambat: 1970-1-1 BS or 1913-4-13 AD
+	private static final long BS_EPOCH_TS = -1789990200000L; // 1913-4-13 AD
+	private static final int BS_YEAR_ZERO = 1970;
+	private static final long[] ENCODED_MONTH_LENGTHS = {
+	  5315258L,5314490L,9459438L,8673005L,5315258L,5315066L,9459438L,8673005L,5315258L,5314298L,9459438L,5327594L,5315258L,5314298L,9459438L,5327594L,5315258L,5314286L,9459438L,5315306L,5315258L,5314286L,8673006L,5315306L,5315258L,5265134L,8673006L,5315258L,5315258L,9459438L,8673005L,5315258L,5314298L,9459438L,8673005L,5315258L,5314298L,9459438L,8473322L,5315258L,5314298L,9459438L,5327594L,5315258L,5314298L,9459438L,5327594L,5315258L,5314286L,8673006L,5315306L,5315258L,5265134L,8673006L,5315306L,5315258L,9459438L,8673005L,5315258L,5314490L,9459438L,8673005L,5315258L,5314298L,9459438L,8473325L,5315258L,5314298L,9459438L,5327594L,5315258L,5314298L,9459438L,5327594L,5315258L,5314286L,9459438L,5315306L,5315258L,5265134L,8673006L,5315306L,5315258L,5265134L,8673006L,5315258L,5314490L,9459438L,8673005L,5315258L,5314298L,9459438L,8669933L,5315258L,5314298L,9459438L,8473322L,5315258L,5314298L,9459438L,5327594L,5315258L,5314286L,9459438L,5315306L,5315258L,5265134L,8673006L,5315306L,5315258L,5265134L,5527290L,5527277L,5527226L,5527226L,5528046L,5527277L,5528250L,5528057L,5527277L,5527277L
+	};
 
 	private static final BsCalendar instance = new BsCalendar();
-
 	private static final TimeZone GMT = TimeZone.getTimeZone("GMT");
-
-	private static final long[] ENCODED_MONTH_LENGTHS = {
-	      8673005L,5315258L,5314298L,9459438L,8673005L,5315258L,5314298L,9459438L,8473322L,5315258L,5314298L,9459438L,5327594L,5315258L,5314298L,9459438L,5327594L,5315258L,5314286L,8673006L,5315306L,5315258L,5265134L,8673006L,5315306L,5315258L,9459438L,8673005L,5315258L,5314490L,9459438L,8673005L,5315258L,5314298L,9459438L,8473325L,5315258L,5314298L,9459438L,5327594L,5315258L,5314298L,9459438L,5327594L,5315258L,5314286L,9459438L,5315306L,5315258L,5265134L,8673006L,5315306L,5315258L,5265134L,8673006L,5315258L,5314490L,9459438L,8673005L,5315258L,5314298L,9459438L,8669933L,5315258L,5314298L,9459438L,8473322L,5315258L,5314298L,9459438L,5327594L,5315258L,5314286L,9459438L,5315306L,5315258L,5265134L,8673006L,5315306L,5315258L,5265134L,5527290L,5527277L,5527226L,5527226L,5528046L,5527277L,5528250L,5528057L,5527277L,5527277L,
-	};
+	private static final long MS_PER_DAY = 86400000L;
 	private static final String[] _MONTH_NAMES = { "बैशाख", "जेठ", "असार", "साउन", "भदौ", "असोज", "कार्तिक", "मंसिर", "पौष", "माघ", "फाल्गुन", "चैत" };
 	public static final List<String> MONTH_NAMES = unmodifiableList(asList(_MONTH_NAMES));
 
@@ -40,14 +38,14 @@ public final class BsCalendar {
 
 	/**
 	 * Magic numbers:
-	 *   2000 <- the first year encoded in ENCODED_MONTH_LENGTHS
+	 *   BS_YEAR_ZERO <- the first year encoded in ENCODED_MONTH_LENGTHS
 	 *   month #5 <- this is the only month which has a day variation of more than 1
 	 *   & 3 <- this is a 2 bit mask, i.e. 0...011
 	 */
 	public int daysInMonth(int year, int month) throws BsException {
 		if(month < 1 || month > 12) throw new BsException(format("Month does not exist: %s", month));
 		try {
-			return 29 + (int) ((ENCODED_MONTH_LENGTHS[year - 2000] >>>
+			return 29 + (int) ((ENCODED_MONTH_LENGTHS[year - BS_YEAR_ZERO] >>>
 					(((month-1) << 1))) & 3);
 		} catch(ArrayIndexOutOfBoundsException ex) {
 			throw new BsException(format("Unsupported year/month combination: %s/%s", year, month));
@@ -57,16 +55,16 @@ public final class BsCalendar {
 	public BsGregorianDate toGreg(BikramSambatDate bik) throws BsException {
 		int year = bik.year, month = bik.month, day = bik.day;
 
-		long timestamp = BS_EPOCH_TS;
+		long timestamp = BS_EPOCH_TS + (MS_PER_DAY * day);
+		month--;
+
 		while(year >= BS_YEAR_ZERO) {
-			while(month >= 1) {
-				while(--day >= 0) {
-					timestamp += MS_PER_DAY;
-				}
-				if(--month == 0) break;
-				day = daysInMonth(year, month);
+			while(month > 0) {
+				timestamp += (MS_PER_DAY * daysInMonth(year, month));
+				month--;
 			}
-			day = daysInMonth(--year, month = 12);
+			month = 12;
+			year--;
 		}
 
 		Calendar c = Calendar.getInstance(GMT);
@@ -99,11 +97,11 @@ public final class BsCalendar {
 	/**
 	 * Magic numbers:
 	 *  86400000 <- the number of miliseconds in a day
-	 *  2007 <- The year (BS) whose first day is our Bikram Sambat Epoch (BSE)
+	 *  BS_YEAR_ZERO <- The year (BS) whose first day is our Bikram Sambat Epoch (BSE)
 	 *  -622359900000 <- unix timestamp of BSE ('1950-4-13')
 	 */
 	private BikramSambatDate toBik(String greg) throws BsException {
-		int year = 2007;
+		int year = BS_YEAR_ZERO;
 		int days;
 		try {
 			days = (int) Math.floor((parseDate(greg) - BS_EPOCH_TS) / MS_PER_DAY) + 1;
