@@ -1,6 +1,8 @@
 [
   { "year":0, "month":0 },
   { "year":0, "month":1 },
+  { "year":1969, "month":1 },
+  { "year":2091, "month":1 },
   { "year":9999, "month":12 },
   { "year":9999, "month":99 }
 ]

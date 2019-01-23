@@ -28,6 +28,16 @@ class BsCalendarSpec extends Specification {
 	}
 
 	@Unroll
+	def 'toBik() should convert #year-#month-#day to #expectedBikram'(year, month, day, expectedBikram) {
+		expect:
+			bs.toBik(year, month, day).toString() == expectedBikram
+
+		where:
+			year | month  | day | expectedBikram
+			1949 | 6      | 6   | '2006-02-24'
+	}
+
+	@Unroll
 	def 'toBik_euro()'(testCase) {
 		given:
 			def gregorian = testCase.key
@@ -51,6 +61,19 @@ class BsCalendarSpec extends Specification {
 
 		where:
 			testCase << testJson('daysInMonth')
+	}
+
+	@Unroll
+	def 'toGreg() should throw BsException if date not within supported range'(year, month, day) {
+		when:
+			bs.toGreg(new BikramSambatDate(year, month, day))
+
+		then:
+			thrown(BsException)
+
+		where:
+			year | month  | day
+			1930 | 1      | 21
 	}
 
 	@Unroll

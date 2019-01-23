@@ -55,6 +55,10 @@ public final class BsCalendar {
 	public BsGregorianDate toGreg(BikramSambatDate bik) throws BsException {
 		int year = bik.year, month = bik.month, day = bik.day;
 
+		if(month < 1) throw new BsException("Invalid month value " + month);
+		if(year < BS_YEAR_ZERO) throw new BsException("Invalid year value " + year);
+		if(day < 1 || day > daysInMonth(year, month)) throw new BsException("Invalid day value " + day);
+
 		long timestamp = BS_EPOCH_TS + (MS_PER_DAY * day);
 		month--;
 
