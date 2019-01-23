@@ -79,3 +79,23 @@ For usage example, see `bootstrap/dist`.
 3. Run the script: node ./scripts/encode-days-in-month.js
 4. Copy the output code into the files overwriting the existing hardcoded values
 
+## Publish
+
+### Java
+
+1. Make a tag called `java-${version}`, eg: `java-1.0.0`
+2. Push your tag
+3. Wait for travis to publish to [our maven repo](https://staging.dev.medicmobile.org/_couch/maven-repo/bikramsambat)
+
+### JavaScript
+
+1. Make a tag called `js-${version}`, eg: `js-1.5.1`
+2. Run `make release-js`
+3. Push your tag
+
+### Bootstrap
+
+1. If you've made changes to the JavaScript library, publish it first and update the `/bootstrap/package.json` file to depend on the updated libary
+2. Make a tag called `bootstrap-${version}`, eg: `bootstrap-1.4.3`
+3. Run `make release-bootstrap`
+4. Push your tag
