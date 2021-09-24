@@ -1,14 +1,14 @@
 #!/bin/bash -eu
 
-if ! [[ "${TRAVIS_TAG-}" = java-* ]] && ! [[ "${TRAVIS_BRANCH-}" = "master" ]]; then
+if ! [[ "${TAG-}" = java-* ]] && ! [[ "${BRANCH-}" = "master" ]]; then
 	echo "[maven-deploy] This build is not tagged for java release.  Will not be uploaded to maven."
 	exit 1
 fi
 
-if [[ "${TRAVIS_BRANCH-}" = "master" ]]; then
+if [[ "${BRANCH-}" = "master" ]]; then
 	version="SNAPSHOT"
 else
-	version="${TRAVIS_TAG##*-}"
+	version="${TAG##*-}"
 fi
 
 echo "[maven-deploy] Version: ${version}"
