@@ -2,7 +2,7 @@
 
 if ! [[ "${TAG-}" = java-* ]] && ! [[ "${BRANCH-}" = "master" ]]; then
 	echo "[maven-deploy] This build is not tagged for java release.  Will not be uploaded to maven."
-	exit 1
+	exit 0
 fi
 
 if [[ "${BRANCH-}" = "master" ]]; then
