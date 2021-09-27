@@ -38,6 +38,21 @@ describe('bikram-sambat', function() {
     });
   });
 
+  describe('#toBik_format()', function() {
+    _.forIn({
+      // gregorian -> bikram
+      '1950-04-13': { day: '१', month: 'बैशाख', year: '२००७' },
+    }, function(expectedBikram, gregorian) {
+
+      it('should convert ' + gregorian + ' AD => ' + expectedBikram + ' BS', function() {
+
+        // expect
+        assert.deepEqual(bs.toBik_format(gregorian), expectedBikram);
+
+      });
+    });
+  });
+
   describe('#toBik_euro()', function() {
     _.forIn(test_data_for('toBik_euro'), function(expectedBikram, gregorian) {
 

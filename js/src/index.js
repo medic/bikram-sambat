@@ -57,9 +57,18 @@ function toBik_dev(greg) {
   return toDevanagari(toBik_euro(greg));
 }
 
-function toBik_text(greg) {
+function toBik_format(greg) {
   var d = toBik(greg);
-  return toDevanagari(d.day) + ' ' + MONTH_NAMES[d.month-1] + ' ' + toDevanagari(d.year);
+  return {
+    day: toDevanagari(d.day),
+    month: MONTH_NAMES[d.month-1],
+    year: toDevanagari(d.year)
+  };
+}
+
+function toBik_text(greg) {
+  var bikFormat = toBik_format(greg);
+  return bikFormat.day + ' ' + bikFormat.month + ' ' + bikFormat.year;
 }
 
 function toGreg(year, month, day) {
@@ -99,6 +108,7 @@ module.exports = {
   toBik_dev: toBik_dev,
   toBik_euro: toBik_euro,
   toBik_text: toBik_text,
+  toBik_format: toBik_format,
   toGreg: toGreg,
   toGreg_text: toGreg_text
 };
