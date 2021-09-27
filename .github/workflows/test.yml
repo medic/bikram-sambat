@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 8.x, 10.x, 12.x ]
+        node-version: [ 12.x, 14.x, 16.x ]
 
     defaults:
       run:
@@ -30,7 +30,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 8.x, 10.x, 12.x ]
+        node-version: [ 12.x, 14.x, 16.x ]
 
     defaults:
       run:
