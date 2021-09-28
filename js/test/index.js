@@ -38,6 +38,27 @@ describe('bikram-sambat', function() {
     });
   });
 
+  describe('#toBik()', function() {
+    _.forIn({
+      // gregorian -> bikram
+      '1950-04-13': { day: 1, month: 1, year: 2007 },
+    }, function(expectedBikram, gregorian) {
+
+      it('should convert ' + gregorian + ' AD => ' + expectedBikram + ' BS', function() {
+
+        // expect
+        assert.deepEqual(bs.toBik(gregorian), expectedBikram);
+
+      });
+    });
+  });
+
+  describe('#toDev()', function() {
+    it('should convert 2050-2-1 to ', () => {
+      assert.deepEqual(bs.toDev(2050, 2, 1), { day: '१', month: 'जेठ', year: '२०५०' });
+    });
+  });
+
   describe('#toBik_euro()', function() {
     _.forIn(test_data_for('toBik_euro'), function(expectedBikram, gregorian) {
 

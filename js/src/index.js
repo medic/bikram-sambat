@@ -48,6 +48,14 @@ function toBik(greg) {
   throw new Error('Date outside supported range: ' + greg + ' AD');
 }
 
+function toDev(year, month, day) {
+  return {
+    day: toDevanagari(day),
+    month: MONTH_NAMES[month-1],
+    year: toDevanagari(year)
+  };
+}
+
 function toBik_euro(greg) {
   var d = toBik(greg);
   return d.year + '-' + zPad(d.month) + '-' + zPad(d.day);
@@ -58,8 +66,9 @@ function toBik_dev(greg) {
 }
 
 function toBik_text(greg) {
-  var d = toBik(greg);
-  return toDevanagari(d.day) + ' ' + MONTH_NAMES[d.month-1] + ' ' + toDevanagari(d.year);
+  var bik = toBik(greg);
+  var dev = toDev(bik.year, bik.month, bik.day);
+  return dev.day + ' ' + dev.month + ' ' + dev.year;
 }
 
 function toGreg(year, month, day) {
@@ -96,6 +105,7 @@ function toGreg_text(year, month, day) {
 module.exports = {
   daysInMonth: daysInMonth,
   toBik: toBik,
+  toDev: toDev,
   toBik_dev: toBik_dev,
   toBik_euro: toBik_euro,
   toBik_text: toBik_text,
