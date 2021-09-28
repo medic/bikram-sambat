@@ -36,12 +36,10 @@ function toBik(greg) {
   var m, dM, year = BS_YEAR_ZERO,
       days = Math.floor((Date.parse(greg) - BS_EPOCH_TS) / MS_PER_DAY) + 1;
 
-  while (days > 0) {
-    for (m=1; m<=12; ++m) {
+  while(days > 0) {
+    for(m=1; m<=12; ++m) {
       dM = daysInMonth(year, m);
-      if (days <= dM) {
-        return { year: year, month: m, day: days };
-      }
+      if(days <= dM) return { year:year, month:m, day:days };
       days -= dM;
     }
     ++year;
