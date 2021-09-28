@@ -41,18 +41,14 @@ describe('bikram-sambat', function() {
   describe('#toBik()', function() {
     _.forIn({
       // gregorian -> bikram
-      '1950-04-13': { euro: { day: 1, month: 1, year: 2007 }, devanagari: { day: '१', month: 'बैशाख', year: '२००७' } },
+      '1950-04-13': { day: 1, month: 1, year: 2007 },
     }, function(expectedBikram, gregorian) {
 
       it('should convert ' + gregorian + ' AD => ' + expectedBikram + ' BS', function() {
 
         // expect
-        assert.deepEqual(bs.toBik(gregorian), expectedBikram.euro);
+        assert.deepEqual(bs.toBik(gregorian), expectedBikram);
 
-      });
-
-      it('should convert ' + gregorian + ' AD => ' + expectedBikram + ' BS and return devanagari translation', () => {
-        assert.deepEqual(bs.toBik(gregorian, true), expectedBikram.devanagari);
       });
     });
   });

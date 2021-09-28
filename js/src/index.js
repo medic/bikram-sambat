@@ -31,7 +31,7 @@ function daysInMonth(year, month) {
 
 function zPad(x) { return x > 9 ? x : '0' + x; }
 
-function toBik(greg, devanagari) {
+function toBik(greg) {
   // TODO do not use Date.parse(), as per https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
   var m, dM, year = BS_YEAR_ZERO,
       days = Math.floor((Date.parse(greg) - BS_EPOCH_TS) / MS_PER_DAY) + 1;
@@ -40,9 +40,6 @@ function toBik(greg, devanagari) {
     for (m=1; m<=12; ++m) {
       dM = daysInMonth(year, m);
       if (days <= dM) {
-        if (devanagari) {
-          return toDev(year, m, days);
-        }
         return { year: year, month: m, day: days };
       }
       days -= dM;
@@ -71,8 +68,9 @@ function toBik_dev(greg) {
 }
 
 function toBik_text(greg) {
-  var bik = toBik(greg, true);
-  return bik.day + ' ' + bik.month + ' ' + bik.year;
+  var bik = toBik(greg);
+  var dev = toDev(bik.year, bik.month, bik.day);
+  return dev.day + ' ' + dev.month + ' ' + dev.year;
 }
 
 function toGreg(year, month, day) {
