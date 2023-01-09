@@ -21,7 +21,7 @@ function initListeners($parent, dateInputSelecter) {
     .on('change blur', function() {
       var $this = $(this);
       var $inputGroup = $this.parents('.bikram-sambat-input-group');
-      updateBackingDateInput($inputGroup, dateInputSelecter);
+      updateConvertedDate($inputGroup, dateInputSelecter);
     })
     ;
 
@@ -32,7 +32,7 @@ function initListeners($parent, dateInputSelecter) {
       setVal($inputGroup, 'month', 1+$this.parent('li').index());
       $this.parents('.input-group-btn').find('.dropdown-toggle').html($this.text() + ' <span class="caret"></span>');
 
-      updateBackingDateInput($inputGroup, dateInputSelecter);
+      updateConvertedDate($inputGroup, dateInputSelecter);
     });
 }
 
@@ -52,9 +52,10 @@ function setDropdown($parent, name, val) {
     .eq(val - 1)
     .click();
 }
-function updateBackingDateInput($inputGroup, dateInputSelecter) {
+
+function updateConvertedDate($inputGroup, dateInputSelecter) {
   var greg = getDate_greg_text($inputGroup);
-  if(greg) $(dateInputSelecter).val(greg).trigger('change');
+  $(dateInputSelecter).val(greg).trigger('change');
 }
 
 //> EXPORTED FUNCTIONS
