@@ -24,6 +24,142 @@ Javascript and Java utilities for converting between the Nepali Bikram Sambat (V
 	console.log(bs.toBik_text('2017-03-28'));
 	> १५ चैत २०७३
 
+## Functions
+
+### `daysInMonth(year, month)`
+
+Returns the number of days in a given month of a specific year in the Bikram Sambat calendar.
+
+**Parameters:**
+- `year` (number): The Bikram Sambat year.
+- `month` (number): The month (1-12).
+
+**Returns:**
+- `number`: The number of days in the specified month of the given year.
+
+**Example:**
+```javascript
+const days = daysInMonth(2079, 5); // 30
+```
+
+### `toBik(greg)`
+
+Converts a Gregorian date to Bikram Sambat.
+
+**Parameters:**
+- `greg` (string): The Gregorian date in ISO format (e.g., '2024-07-24').
+
+**Returns:**
+- `object`: An object representing the Bikram Sambat date with `year`, `month`, and `day`.
+
+**Example:**
+```javascript
+const bsDate = toBik('2024-07-24'); 
+// { year: 2081, month: 4, day: 9 }
+```
+
+### `toDev(year, month, day)`
+
+Converts a Bikram Sambat date to Devanagari script.
+
+**Parameters:**
+- `year` (number): The Bikram Sambat year.
+- `month` (number): The Bikram Sambat month (1-12).
+- `day` (number): The Bikram Sambat day.
+
+**Returns:**
+- `object`: An object with the Devanagari script representation of the day, month, and year.
+
+**Example:**
+```javascript
+const devanagariDate = toDev(2081, 4, 9);
+// { day: '०९', month: 'साउन', year: '२०८१' }
+```
+
+### `toBik_euro(greg)`
+
+Converts a Gregorian date to Bikram Sambat in the format `YYYY-MM-DD`.
+
+**Parameters:**
+- `greg` (string): The Gregorian date in ISO format (e.g., '2024-07-24').
+
+**Returns:**
+- `string`: The Bikram Sambat date in `YYYY-MM-DD` format.
+
+**Example:**
+```javascript
+const bsDateStr = toBik_euro('2024-07-24'); 
+// '2081-04-09'
+```
+
+### `toBik_dev(greg)`
+
+Converts a Gregorian date to Bikram Sambat in Devanagari script.
+
+**Parameters:**
+- `greg` (string): The Gregorian date in ISO format (e.g., '2024-07-24').
+
+**Returns:**
+- `string`: The Bikram Sambat date in Devanagari script.
+
+**Example:**
+```javascript
+const devanagariBsDateStr = toBik_dev('2024-07-24'); 
+// '०९ साउन २०८१'
+```
+
+### `toBik_text(greg)`
+
+Converts a Gregorian date to a textual representation of the Bikram Sambat date.
+
+**Parameters:**
+- `greg` (string): The Gregorian date in ISO format (e.g., '2024-07-24').
+
+**Returns:**
+- `string`: The Bikram Sambat date in textual format (e.g., '09 साउन 2081').
+
+**Example:**
+```javascript
+const bsDateText = toBik_text('2024-07-24'); 
+// '०९ साउन २०८१'
+```
+
+### `toGreg(year, month, day)`
+
+Converts a Bikram Sambat date to Gregorian.
+
+**Parameters:**
+- `year` (number): The Bikram Sambat year.
+- `month` (number): The Bikram Sambat month (1-12).
+- `day` (number): The Bikram Sambat day.
+
+**Returns:**
+- `object`: An object representing the Gregorian date with `year`, `month`, and `day`.
+
+**Example:**
+```javascript
+const gregDate = toGreg(2081, 4, 9); 
+// { year: 2024, month: 7, day: 24 }
+```
+
+### `toGreg_text(year, month, day)`
+
+Converts a Bikram Sambat date to Gregorian in `YYYY-MM-DD` format.
+
+**Parameters:**
+- `year` (number): The Bikram Sambat year.
+- `month` (number): The Bikram Sambat month (1-12).
+- `day` (number): The Bikram Sambat day.
+
+**Returns:**
+- `string`: The Gregorian date in `YYYY-MM-DD` format.
+
+**Example:**
+```javascript
+const gregDateStr = toGreg_text(2081, 4, 9); 
+// '2024-07-24'
+```
+
 
 # Java
 
