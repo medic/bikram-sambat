@@ -69,10 +69,10 @@ jobs:
       - name: Update Gradle Wrapper
         run: ./gradlew wrapper --gradle-version 7.6
 
-      - name: Test
+      - name: Build
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
-        run: ./gradlew --daemon --parallel test
+        run: ./gradlew --daemon --parallel build
 
   publish:
     needs: [ js-bootstrap, js-library, java ]
