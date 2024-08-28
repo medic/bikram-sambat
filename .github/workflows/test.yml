@@ -52,23 +52,30 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
+
       - name: Set up Java
         uses: actions/setup-java@v1.4.3
         with:
-          java-version: 1.8
+          java-version: 11
+
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
+
       - uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
           ndk-version: r17c
-      - name: Test
+
+      - name: Update Gradle Wrapper
+        run: ./gradlew wrapper --gradle-version 7.6
+
+      - name: Build
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
-        run: make test-java
+        run: ./gradlew --daemon --parallel build
 
   publish:
-    needs: [js-bootstrap, js-library, java]
+    needs: [ js-bootstrap, js-library, java ]
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout
@@ -76,13 +83,15 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v1.4.3
         with:
-          java-version: 1.8
+          java-version: 11
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
       - uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
           ndk-version: r17c
+      - name: Update Gradle Wrapper
+        run: ./gradlew wrapper --gradle-version 7.6
       - name: Set IS_TAG
         if: startsWith(github.ref, 'refs/tags/')
         run: echo "TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
@@ -92,4 +101,3 @@ jobs:
         run: |
           scripts/ci/maven-deploy java/lib/build/libs/bikram-sambat.jar bikramsambat bikram-sambat
           scripts/ci/maven-deploy java/android-lib/build/outputs/aar/android-lib-release.aar bikramsambat bikram-sambat-android
-
