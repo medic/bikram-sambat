@@ -5,11 +5,11 @@ on: [push, pull_request]
 jobs:
   js-bootstrap:
     name: Test JS bootstrap on Node v${{ matrix.node-version }}
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     strategy:
       matrix:
-        node-version: [ 12.x, 14.x, 16.x ]
+        node-version: [ 21.x, 22.x, 23.x ]
 
     defaults:
       run:
@@ -26,11 +26,11 @@ jobs:
 
   js-library:
     name: Test JS library on Node v${{ matrix.node-version }}
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     strategy:
       matrix:
-        node-version: [ 12.x, 14.x, 16.x ]
+        node-version: [ 21.x, 22.x, 23.x ]
 
     defaults:
       run:
@@ -76,7 +76,7 @@ jobs:
 
   publish:
     needs: [ js-bootstrap, js-library, java ]
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
