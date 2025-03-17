@@ -1,6 +1,6 @@
 {
   "name": "bikram-sambat-bootstrap",
-  "version": "1.6.0",
+  "version": "1.8.0",
   "description": "bikram sambat datepicker for bootstrap",
   "main": "src/bikram-sambat-bootstrap.js",
   "scripts": {
@@ -24,7 +24,7 @@
     "jshint": "^2.9.5"
   },
   "dependencies": {
-    "bikram-sambat": "^1.7.0",
+    "bikram-sambat": "^1.8.0",
     "eurodigit": "^3.1.1"
   }
 }
