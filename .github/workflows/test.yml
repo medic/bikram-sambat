@@ -26,7 +26,7 @@ jobs:
 
   js-library:
     name: Test JS library on Node v${{ matrix.node-version }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     strategy:
       matrix:
@@ -47,7 +47,7 @@ jobs:
 
   java:
     name: Test Java
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
@@ -76,7 +76,7 @@ jobs:
 
   publish:
     needs: [ js-bootstrap, js-library, java ]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
