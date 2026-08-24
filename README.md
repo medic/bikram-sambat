@@ -235,3 +235,10 @@ For usage example, see `bootstrap/dist`.
 2. Make a tag called `bootstrap-${version}`, eg: `bootstrap-1.4.3`
 3. Run `make release-bootstrap`
 4. Push your tag
+
+### Calendar
+
+1. If you've made changes to the JavaScript library, publish it first and update the `/calendar/package.json` file to depend on the updated library
+2. Make a tag called `calendar-${version}`, eg: `calendar-1.8.1`
+3. Run `make release-calendar`
+4. Push your tag
