@@ -13,7 +13,7 @@ endif
 
 default: test assemble-java android
 
-test: test-js test-bootstrap test-java
+test: test-js test-bootstrap test-calendar test-java
 
 travis: test
 
@@ -44,6 +44,24 @@ release-bootstrap: setup-bootstrap
 	cd bootstrap && \
 		../scripts/write-version-number bootstrap $$(git describe --abbrev=0 --tags) && \
 		npm publish
+
+
+.PHONY: setup-calendar test-calendar build-calendar release-calendar
+
+test-calendar: build-calendar
+	cd calendar && npm test
+
+build-calendar:
+	cd calendar && npm run build
+
+setup-calendar:
+	cd calendar && npm install
+
+release-calendar: setup-calendar build-calendar
+	cd calendar && \
+		../scripts/write-version-number calendar $$(git describe --abbrev=0 --tags) && \
+		npm publish
+
 
 
 .PHONY: java assemble-java test-java

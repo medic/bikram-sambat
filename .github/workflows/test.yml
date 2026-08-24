@@ -45,6 +45,28 @@ jobs:
       - run: npm ci
       - run: npm test
 
+  js-calendar:
+    name: Test JS calendar on Node v${{ matrix.node-version }}
+    runs-on: ubuntu-24.04
+
+    strategy:
+      matrix:
+        node-version: [ 18.x, 20.x, 22.x ]
+
+    defaults:
+      run:
+        working-directory: ./calendar
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+
   java:
     name: Test Java
     runs-on: ubuntu-24.04
@@ -75,7 +97,7 @@ jobs:
         run: ./gradlew --daemon --parallel build
 
   publish:
-    needs: [ js-bootstrap, js-library, java ]
+    needs: [ js-bootstrap, js-library, js-calendar, java ]
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout

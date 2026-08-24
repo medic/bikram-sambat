@@ -2,3 +2,5 @@
 /temp_scripts/
 /*.log
 /.idea
+/calendar/dist/
+/calendar/node_modules/
